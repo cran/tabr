@@ -1,6 +1,6 @@
 ## ----setup, include = FALSE----------------------------------------------
 knitr::opts_chunk$set(
-  collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, error = FALSE, tidy = TRUE, out.width = "100%"
+  collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, error = FALSE, tidy = FALSE, out.width = "100%"
 )
 
 ## ----p1------------------------------------------------------------------
@@ -8,7 +8,7 @@ library(tabr)
 phrase(notes = "r a2 c3 f3 d3 a3 f3", info = "4 8 8 8 8 8 8", string = "x 5 5 4 4 3 4")
 
 ## ----p2------------------------------------------------------------------
-p1 <- p("r a2 c3 f3 d3 a3 f3", "4 8 8 8 8 8 8", "x 5 5 4 4 3 4")
+p1 <- p("r a2 c f d a f", "4 8*6")
 
 ## ----track---------------------------------------------------------------
 track1 <- track(p1)
@@ -19,7 +19,8 @@ song <- score(track1)
 song
 
 ## ----opts----------------------------------------------------------------
-tabr_options(lilypond = "C:/Program Files (x86)/LilyPond/usr/bin/lilypond.exe")
+# may not be necessary
+# tabr_options(lilypond = "C:/Program Files (x86)/LilyPond/usr/bin/lilypond.exe")
 
 ## ----ex1, eval=FALSE-----------------------------------------------------
 #  tab(song, "phrase.pdf", key = "dm", time = "4/4", tempo = "4 = 120")
@@ -41,4 +42,8 @@ cat(
   "Converting to `./phrase.pdf'...",
   "Success: compilation successfully completed", sep = "\n"
 )
+
+## ----pipe, results="hide", eval=FALSE------------------------------------
+#  p("r a2 c f d a f", "4 8*6") %>% track %>% score %>%
+#    tab(song, "phrase.pdf", key = "dm", time = "4/4", tempo = "4 = 120")
 
