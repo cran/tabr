@@ -1,11 +1,13 @@
 ## ----setup, include = FALSE----------------------------------------------
+options(crayon.enabled = TRUE)
+sgr_wrap <- function(x, options){
+  paste0("<pre class=\"r-output\"><code>", fansi::sgr_to_html(x = htmltools::htmlEscape(x)), "</code></pre>")
+}
+knitr::knit_hooks$set(output = sgr_wrap)
 knitr::opts_chunk$set(
-  collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, error = FALSE, tidy = TRUE, out.width = "100%"
+  collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, error = FALSE, tidy = FALSE, out.width = "100%"
 )
-
-## ----args----------------------------------------------------------------
 library(tabr)
-args(lilypond)
 
 ## ----song----------------------------------------------------------------
 voice1 <- rp(p("c5 d5 e5 f5 g5", "1 2 4 4 1", "1*5"), 2)

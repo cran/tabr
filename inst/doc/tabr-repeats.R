@@ -1,10 +1,15 @@
 ## ----setup, include = FALSE----------------------------------------------
+options(crayon.enabled = TRUE)
+sgr_wrap <- function(x, options){
+  paste0("<pre class=\"r-output\"><code>", fansi::sgr_to_html(x = htmltools::htmlEscape(x)), "</code></pre>")
+}
+knitr::knit_hooks$set(output = sgr_wrap)
 knitr::opts_chunk$set(
-  collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, error = FALSE, tidy = TRUE, out.width = "100%"
+  collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, error = FALSE, tidy = FALSE, out.width = "100%"
 )
+library(tabr)
 
 ## ----rep1----------------------------------------------------------------
-library(tabr)
 p1 <- p("c e g c' e' c' g e", 8)
 dup(p1, 2) # repeat n = 2 times
 rp(p1, 1) # repeat once (n = 1), or play twice (n + 1)

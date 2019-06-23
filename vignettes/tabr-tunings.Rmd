@@ -8,8 +8,13 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
+options(crayon.enabled = TRUE)
+sgr_wrap <- function(x, options){
+  paste0("<pre class=\"r-output\"><code>", fansi::sgr_to_html(x = htmltools::htmlEscape(x)), "</code></pre>")
+}
+knitr::knit_hooks$set(output = sgr_wrap)
 knitr::opts_chunk$set(
-  collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, error = FALSE, tidy = TRUE, out.width = "100%"
+  collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, error = FALSE, tidy = FALSE, out.width = "100%"
 )
 library(tabr)
 ```
@@ -26,7 +31,6 @@ This section covers differently strung guitars and string instruments as well as
 The `tuning` argument to track accepts a variety of predefined commonly used string tunings, defaulting to `standard`. To the right is a table of predefined tunings for various instruments.
 
 ```{r table0, eval=FALSE}
-library(tabr)
 tunings
 ```
 
@@ -71,7 +75,7 @@ tracks
 score(tracks) %>% tab("out.pdf")
 ```
 
-<p align="center"><img src="https://github.com/leonawicz/tabr/blob/master/data-raw/vignette-pngs/ex34.png?raw=true" width="40%"></p>
+<p><img src="https://github.com/leonawicz/tabr/blob/master/data-raw/vignette-pngs/ex34.png?raw=true" class="centerimg" width="40%"></p>
 
 Notice that for tunings other than standard guitar, the default is to show the note each string is tuned to at the start of the tablature staff. These can be turning off in `score` using `string_names = FALSE`. For example, when making a pure bass tab in standard tuning, you might opt to exclude this. There must still be some familiarity with the instrument of course. In the case of the made up one string instrument, no one would know which octave the open C belongs to, but the person with such an instrument would surely know what to expect.
 
@@ -88,11 +92,11 @@ tracks
 score(tracks) %>% tab("out.pdf")
 ```
 
-<p align="center"><img src="https://github.com/leonawicz/tabr/blob/master/data-raw/vignette-pngs/ex35.png?raw=true" width="40%"></p>
+<p><img src="https://github.com/leonawicz/tabr/blob/master/data-raw/vignette-pngs/ex35.png?raw=true" class="centerimg" width="40%"></p>
 
 ## Current limitations
 
-Although `tabr` infers the an instrument's number of strings from its tuning, there are limitations. Chord fretboard diagrams are only supported for guitar, six string guitar specifically. If you trying to pass four or five strings worth of information to `chord_set` for bass, ukulele or banjo for example, this will incompletely fill in a six string guitar fretboard diagram in the chord chart of the output. Similarly, if you trying to provide seven strings for a seven string guitar, the chord chart will show the additional note, but it will be floating to the side of the chart because a seventh string line is not will not be added to the diagram. Number of strings inferred from instrument tuning shows up in the tablature staff but does not generalize to fretboard diagrams.
+Although `tabr` infers the an instrument's number of strings from its tuning, there are limitations. Chord fretboard diagrams are only supported for guitar, six string guitar specifically. If attempting to pass four or five strings of information to `chord_set` for bass, ukulele or banjo for example, this will incompletely fill in a six string guitar fretboard diagram in the chord chart of the output. Similarly, if attempting to provide seven strings for a seven string guitar, the chord chart will show the additional note, but it will be floating to the side of the chart. A seventh string line is not added to the diagram. Number of strings inferred from instrument tuning displays in the tablature staff, but does not generalize to fretboard diagrams.
 
 ```{r cleanup, echo=FALSE}
 unlink("*.mid")

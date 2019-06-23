@@ -1,3 +1,27 @@
+# tabr 0.3.0
+
+* Added `fretboard_plot` for making fretboard diagrams outside of the LilyPond tablature pipeline. This necessitates importing `ggplot2`.
+* Added functions for phrase validation, coercion and decomposition back to original character string inputs.
+* Added functions for note, pitch, chord and octave equivalence checks.
+* Added a collection of functions for constructing and working with common chords. The chord constructors are among the `chord_*`-named functions and also have shorter `x*`-named aliases. These are "piano chords," i.e., based on the condensed, defining intervals.
+* Added `guitarChords` dataset containing several thousand formations of guitar chord voicings.
+* Added helper functions that use `guitarChords` for obtaining guitar chord information and mapping between different defining properties of a chord, most notably the addition of `gc_notes` and `gc_fretboard` for mapping chord names to noteworthy strings and fretboard diagram syntax.
+* Added helper functions for working with basic note/pitch strings.
+* Added helper functions for working with musical scales and modes.
+* Added helper functions for working with musical intervals.
+* Added `noteworthy` class, used internally, optional for users (includes custom print and summary methods).
+* Added `mainIntervals` dataset.
+* Added more internal checks of note and chord syntax validity across functions that work with string representations (pre-`phrase` object construction).
+* Update older functions to utilize the new, more robust and stricter validation checks and offer more consistent `noteworthy` class output.
+* updated `transpose` to handle additional edge cases, including a new style option, `strip`.
+* Updated and added new unit tests.
+* Bug fix for case where `NA`-valued no-chord rests (`s` or `r`) were unnamed in output of `chord_set`.
+* Fixed entry in `tabrSyntax`.
+* Fix class assignment bug and updated `as_phrase`.
+* Added a new column of relative interval size to internal `.keydata` helper table.
+* Added new vignettes focusing on the programming aspect of `tabr`.
+* Updated documentation.
+
 # tabr 0.2.0
 
 * Refactored `tuplet` (and `triplet`) to accept a phrase object as well as a character string of notes. Previously, only notes were accepted but this was too limiting. The argument name has changed to from `notes` to `x` and `tuplet` will now check the class of `x` and handle phrase objects accordingly.
@@ -9,7 +33,7 @@
 * Added and updated unit tests.
 * Added `lintr` to Suggests field in DESCRIPTION per CRAN maintainer request regarding `testthat` unit tests.
 
-# tabr 0.1.2 (Release date: 2018-04-18)
+# tabr 0.1.2
 
 * Unwrapped `lilypond` example from `dontrun` tag.
 * Switched to `tempdir()` location for examples that write files.
@@ -29,7 +53,7 @@ Adjustments to meet requirements for CRAN resubmission:
 
 * Added package scaffolding.
 * Developed initial functions for music description and organization.
-* Developed initial functions for generating Lilypond (`.ly`) files and wrapping around system calls to Lilypond for rendering sheet music to pdf or png.
+* Developed initial functions for generating LilyPond (`.ly`) files and wrapping around system calls to LilyPond for rendering sheet music to pdf or png.
 * Added readme with basic example.
 * Added initial vignette content.
 * Added unit tests.

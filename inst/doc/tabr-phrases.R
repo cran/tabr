@@ -1,6 +1,11 @@
 ## ----setup, include = FALSE----------------------------------------------
+options(crayon.enabled = TRUE)
+sgr_wrap <- function(x, options){
+  paste0("<pre class=\"r-output\"><code>", fansi::sgr_to_html(x = htmltools::htmlEscape(x)), "</code></pre>")
+}
+knitr::knit_hooks$set(output = sgr_wrap)
 knitr::opts_chunk$set(
-  collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, error = FALSE, tidy = TRUE, out.width = "100%"
+  collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, error = FALSE, tidy = FALSE, out.width = "100%"
 )
 library(tabr)
 
@@ -40,7 +45,8 @@ phrase("c,, c, c c' c''", "1*5")
 #  phrase("c3 e3 g3 e3 c3", "8x] 8x] 8x] 8x] 2x") %>% track %>% score %>% tab("ex07.pdf")
 
 ## ----p8, results="hide", eval=FALSE--------------------------------------
-#  phrase("c3 b2 c3 d3 e3 e3 d3 c3 b2 c3 c3 c4", "8- 8- 4 8- 8 8- 8 8- 8- 8 4.- 4", "5*12") %>% track %>% score %>% tab("ex08.pdf")
+#  phrase("c3 b2 c3 d3 e3 e3 d3 c3 b2 c3 c3 c4", "8- 8- 4 8- 8 8- 8 8- 8- 8 4.- 4", "5*12") %>%
+#    track %>% score %>% tab("ex08.pdf")
 
 ## ----p9, results="hide", eval=FALSE--------------------------------------
 #  notes <- glue("c3 b2 c3 d3 e3 e3 d3 c3 b2 c3 c3 c4", "c4 b3 c4 d4 e4 e4 d4 c4 b3 c4 c4 c5")

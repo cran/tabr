@@ -5,23 +5,23 @@
 \alias{tp}
 \title{Transpose pitch}
 \usage{
-transpose(notes, n = 0, key = NA, style = c("default", "tick", "integer"))
+transpose(notes, n = 0, key = NA, style = c("default", "tick",
+  "integer", "strip"))
 
-tp(...)
+tp(notes, n = 0, key = NA, style = c("default", "tick", "integer",
+  "strip"))
 }
 \arguments{
-\item{notes}{character, a valid string of notes, the type passed to \code{phrase}.}
+\item{notes}{character, a noteworthy string.}
 
 \item{n}{integer, positive or negative number of semitones to transpose.}
 
 \item{key}{character, the new key signature after transposing \code{notes}. See details.}
 
 \item{style}{character, specify tick or integer style octave numbering in result. See details.}
-
-\item{...}{arguments passed to transpose.}
 }
 \value{
-a character string.
+character
 }
 \description{
 Transpose pitch by a number of semitones.
@@ -39,7 +39,7 @@ If not provided (\code{key = NA}), transposition lacks full information and simp
 
 The only element other pitch that occurs in a valid notes string is a rest, \code{"r"} or \code{"s"} (silent rest). Rests are ignored by transpose.
 
-The default \code{style} is to use tick style if no integers occur in \code{notes}. The other two options force the respective styles. When integer style is returned, all \code{3}s are dropped since the third octave is the implicit center in LilyPond.
+The default \code{style} is to use tick style if no integers occur in \code{notes}. The \code{"tick"} and \code{"integer"} options force the respective styles. When integer style is returned, all \code{3}s are dropped since the third octave is the implicit center in LilyPond. \code{style = "strip"} removes any explicit octave information.
 }
 \examples{
 transpose("a_3 b_4 c5", 0)

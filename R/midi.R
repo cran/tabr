@@ -62,7 +62,7 @@ midily <- function(midi_file, file, key = "c", absolute = FALSE, quantize = NULL
   .keycheck(x)
   idx <- which(.keydata$key == x)
   n <- .keydata$nsf[idx]
-  if(is_flat(x)) n <- -n
+  if(key_is_flat(x)) n <- -n
   if(.keydata$major[idx]) paste0(n, ":0") else paste0(n, ":1")
 }
 
@@ -104,8 +104,15 @@ miditab <- function(midi_file, file, keep_ly = FALSE, path = NULL, details = TRU
   fp <- .adjust_file_path(file, path)
   if(details) cat("#### Engraving midi to", fp$tp, "####\n")
   do.call(midily, c(list(midi_file = midi_file, file = basename(fp$lp), path = dirname(fp$lp)), list(...)))
-  system(paste0("\"", tabr_options()$lilypond, "\" --", fp$ext, " -dstrip-output-dir=#f \"", fp$lp, "\""),
-         show.output.on.console = details)
+  lp_path <- tabr_options()$lilypond
+  is_windows <- Sys.info()[["sysname"]] == "Windows"
+  if(lp_path == "" && is_windows) lp_path <- "lilypond.exe"
+  call_string <- paste0("\"", lp_path, "\" --", fp$ext, " -dstrip-output-dir=#f \"", fp$lp, "\"")
+  if(is_windows){
+    system(call_string, show.output.on.console = details)
+  } else {
+    system(call_string)
+  }
   if(!keep_ly) unlink(fp$lp)
   invisible()
 }

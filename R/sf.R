@@ -12,11 +12,11 @@
 #' If this is your only option, take note of the details and limitations below.
 #'
 #' This function is a crutch for users not working with musical notes (what to play), but rather just position on the guitar neck (where to play). This method has its conveniences, but it is inherently limiting.
-#' In order to remove ambiguity, it is necessary to specify the instrument tuning and the key signature (or at least whether non-natural notes in the output should be sharps or flats).
+#' In order to remove ambiguity, it is necessary to specify the instrument tuning and the key signature (or at least whether accidentals in the output should be sharps or flats).
 #'
 #' In the standard approach where you specify what to play, specifying exactly where to play is optional, but highly recommended (by providing \code{string}). Here \code{string} is of course required along with \code{fret}.
 #' But any time the tuning changes, this "where to play" method breaks down and must be redone. It is much more robust to provide the string and pitch rather than the string and fret.
-#' The key is always important because it is the only way to indicate if non-natural notes are sharps or flats.
+#' The key is always important because it is the only way to indicate if accidentals are sharps or flats.
 #'
 #' This crutch method also increases redundancy and typing. In order to specify rests \code{r}, silent rests \code{s}, and tied notes \code{~}, these must now be providing in parallel in both the \code{string} and \code{fret} arguments,
 #' whereas in the standard method using \code{phrase}, they need only be provided once to \code{notes}.
@@ -58,21 +58,21 @@ sf_phrase <- function(string, fret, info, key = "c", tuning = "standard", to_not
   notes <- purrr::map2(strsplit(string, " ")[[1]], fret, ~({
     string_tie <- grepl("~", .x)
     fret_tie <- grepl("~", .y)
-    if(!identical(string_tie, fret_tie)) stop("Tied note mismatch.")
+    if(!identical(string_tie, fret_tie)) stop("Tied note mismatch.", call. = FALSE)
     x <- if(any(string_tie)) gsub("~", "", .x) else .x
     y <- if(any(fret_tie)) gsub("~", "", .y) else .y
     rests <- c("r", "s")
     if(x %in% rests | y %in% rests){
-      if(x == y) return(x) else stop("Rest mismatch.")
+      if(x == y) return(x) else stop("Rest mismatch.", call. = FALSE)
     }
     x <- as.integer(strsplit(x, "")[[1]])
-    if(any(!x %in% str_num)) stop("String number outside range inferred by tuning.")
+    if(any(!x %in% str_num)) stop("String number outside range inferred by tuning.", call. = FALSE)
     y <- gsub(" $", "", gsub("(\\(\\d{2}\\))", "\\1 ", y))
     y <- strsplit(y, " ")[[1]]
     y <- lapply(y, function(x){
       if(substr(x, 1, 1) == "(") gsub("\\(|\\)", "", x) else strsplit(x, "")[[1]]
       }) %>% unlist %>% as.integer
-    if(length(x) != length(y)) stop("String/fret mismatch.")
+    if(length(x) != length(y)) stop("String/fret mismatch.", call. = FALSE)
     x <- sapply(seq_along(x), function(i, x, y) transpose(open_notes[x[i]], y[i], key, "tick"), x = x, y = y)
     if(any(string_tie)) x[string_tie] <- paste0(x[string_tie], "~")
     paste(x, collapse = "")
@@ -85,7 +85,7 @@ sf_phrase <- function(string, fret, info, key = "c", tuning = "standard", to_not
 
 #' @export
 #' @rdname sf_phrase
-sfp <- function(...) sf_phrase(...)
+sfp <- sf_phrase
 
 #' @export
 #' @rdname sf_phrase
@@ -97,4 +97,4 @@ sf_note <- function(...){
 
 #' @export
 #' @rdname sf_phrase
-sfn <- function(...) sf_note(...)
+sfn <- sf_note

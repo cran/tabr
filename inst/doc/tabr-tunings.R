@@ -1,6 +1,11 @@
 ## ----setup, include = FALSE----------------------------------------------
+options(crayon.enabled = TRUE)
+sgr_wrap <- function(x, options){
+  paste0("<pre class=\"r-output\"><code>", fansi::sgr_to_html(x = htmltools::htmlEscape(x)), "</code></pre>")
+}
+knitr::knit_hooks$set(output = sgr_wrap)
 knitr::opts_chunk$set(
-  collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, error = FALSE, tidy = TRUE, out.width = "100%"
+  collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, error = FALSE, tidy = FALSE, out.width = "100%"
 )
 library(tabr)
 
@@ -9,7 +14,6 @@ knitr::kable(tunings, "html", escape = TRUE, align = "c") %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"), position = "float_right", full_width = FALSE)
 
 ## ----table0, eval=FALSE--------------------------------------------------
-#  library(tabr)
 #  tunings
 
 ## ----tuning1-------------------------------------------------------------
