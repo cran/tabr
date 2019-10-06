@@ -21,6 +21,15 @@ x <- "c e_ g b_ cd#g"
 is_diatonic(x, "c")
 is_diatonic(x, "b_")
 
+## ----notes2b-------------------------------------------------------------
+x <- "e_2 a_, b_, c#f#a# c#'f#'a#''"
+tally_notes(x)
+tally_pitches(x)
+distinct_notes(x)
+distinct_pitches(x)
+pitch_range(x)
+semitone_range(x)
+
 ## ----notes3--------------------------------------------------------------
 flatten_sharp(x)
 sharpen_flat(x)
@@ -32,6 +41,18 @@ naturalize(x)
 note_set_key(x, "c") # no change possible
 note_set_key(x, "f") # key of F has a flat
 note_set_key(x, "g") # key of G has a sharp
+
+## ----notes5b-------------------------------------------------------------
+x <- "c, c c' c2 c c4"
+as_integer_octaves(x)
+as_tick_octaves(x)
+
+## ----notes5c-------------------------------------------------------------
+(x <- as_space_time(c("c", "e", "g", "ceg")))
+(y <- as_vector_time("c e g ceg"))
+
+as.character(x)
+as.character(y)
 
 ## ----notes6--------------------------------------------------------------
 x <- "b_2 ce_g"
@@ -61,14 +82,23 @@ octave_is_identical(x, y, single_octave = TRUE)
 
 ## ----notes10-------------------------------------------------------------
 x <- "a b ceg"
+note_slice(x, 2:3)
+note_slice(x, c(FALSE, TRUE, TRUE))
+
+## ----notes11-------------------------------------------------------------
+x <- c("a", "b", "ceg")
+note_slice(x, 2:3)
+note_slice(x, c(FALSE, TRUE, TRUE))
+
+## ----notes12-------------------------------------------------------------
 note_rotate(x, 1)
 note_rotate(x, -1)
 
-## ----notes11-------------------------------------------------------------
+## ----notes13-------------------------------------------------------------
 note_shift("c e g", 1)
 note_shift("c e g", -4)
 
-## ----notes12-------------------------------------------------------------
+## ----notes14-------------------------------------------------------------
 note_arpeggiate("c e g", 5)
 note_arpeggiate("c e g", -5)
 

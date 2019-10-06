@@ -10,8 +10,10 @@ knitr::opts_chunk$set(
 library(tabr)
 
 ## ----chords1-------------------------------------------------------------
-x <- "ce_g cd#g"
-chord_is_diatonic(x, key = "b_")
+x <- "b c ce_g cd#g"
+is_diatonic(x, key = "b_")
+chord_is_major(x)
+chord_is_minor(x)
 
 ## ----chords 2------------------------------------------------------------
 x <- "a2 c a2 ceg ce_g cea"
@@ -24,26 +26,41 @@ chord_order(x, "mean")
 
 chord_sort(x, "mean")
 
-## ----chords3-------------------------------------------------------------
+## ----chords 3------------------------------------------------------------
+x <- "a2 ceg e_gc egc,cc'"
+chord_root(x)
+chord_top(x)
+identical(chord_slice(x, 1), chord_root(x))
+
+chord_slice(x, 2)
+chord_slice(x, 4)
+chord_slice(x, 3:5)
+
+## ----chords 4------------------------------------------------------------
+x <- "a2 ceg e_gc egc,cc'"
+note_slice(x, 3:4)
+note_slice(x, is_chord(x))
+
+## ----chords5-------------------------------------------------------------
 x <- "ce_g"
 chord_break(x)
 
-## ----chords4-------------------------------------------------------------
-glue(sapply((-3):3, function(i) chord_invert(x, i)))
+## ----chords6-------------------------------------------------------------
+pc(sapply((-3):3, function(i) chord_invert(x, i)))
 
-## ----chords5-------------------------------------------------------------
+## ----chords7-------------------------------------------------------------
 chord_arpeggiate("ce_gb_", 2)
 chord_arpeggiate("ce_gb_", -2)
 chord_arpeggiate("ce_gb_", 2, by = "chord")
 chord_arpeggiate("ce_gb_", 1, broken = TRUE, collapse = TRUE)
 
-## ----chords6-------------------------------------------------------------
+## ----chords8-------------------------------------------------------------
 dyad("a", 3)
 x <- c("minor third", "m3", "augmented second", "A2")
 sapply(x, function(x) dyad("a", x))
 sapply(x, function(x) dyad("c'", x, reverse = TRUE))
 
-## ----chords7, echo=FALSE-------------------------------------------------
+## ----chords9, echo=FALSE-------------------------------------------------
 name <- c("chord_min", "chord_maj", "chord_min7", "chord_dom7", "chord_7s5", "chord_maj7", "chord_min6", "chord_maj6", "chord_dim", 
   "chord_dim7", "chord_m7b5", "chord_aug", "chord_5", "chord_sus2", "chord_sus4", "chord_dom9", "chord_7s9", "chord_maj9", 
   "chord_add9", "chord_min9", "chord_madd9", "chord_min11", "chord_7s11", "chord_maj7s11", "chord_11", "chord_maj11", "chord_13", "chord_min13", "chord_maj13")
@@ -51,7 +68,7 @@ abb <- c("xm", "xM", "xm7", "x7", "x7s5", "xM7", "xm6", "xM6", "xdim", "xdim7", 
   "x5", "xs2", "xs4", "x9", "x7s9", "xM9", "xadd9", "xm9", "xma9", "xm11", "x7s11", "xM7s11", "x_11", "xM11", "x_13", "xm13", "xM13")
 data.frame(full_name = name, abbreviation = abb)
 
-## ----chords8-------------------------------------------------------------
+## ----chords10------------------------------------------------------------
 chord_min7("a c e")
 chord_min7("a c e", key = "f")
 xm7("a c e", key = "f")

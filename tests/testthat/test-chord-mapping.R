@@ -30,10 +30,13 @@ test_that("chord mapping returns as expected", {
 test_that("lp_chord_name and lp_chord_mod return as expected", {
   expect_equal(lp_chord_id("a a a", "m M m7_5"), c("a:m", "a:5", "a:m7_5"))
   expect_equal(lp_chord_mod("a a a", "m M m7_5"), c("m", "5", "m7_5"))
-  expect_equal(lp_chord_id("a a a", "m M m7_5", exact = TRUE), c("a:m", "a:5", "a:m7es5"))
-  expect_equal(lp_chord_mod("a a a", "m M m7_5", exact = TRUE), c("m", "5", "m7es5"))
+  expect_equal(lp_chord_id("a a a", "m M m7_5", exact = TRUE),
+               c("a:m", "a:5", "a:m7es5"))
+  expect_equal(lp_chord_mod("a a a", "m M m7_5", exact = TRUE),
+               c("m", "5", "m7es5"))
 
-  expect_equal(lp_chord_id("a a a a", "mb5 m7b5 m#5 m7#5"), c("a:m5-", "a:m7.5-", "a:m5+", "a:m7.5+"))
+  expect_equal(lp_chord_id("a a a a", "mb5 m7b5 m#5 m7#5"),
+               c("a:m5-", "a:m7.5-", "a:m5+", "a:m7.5+"))
   expect_equal(lp_chord_id("a", "M/2"), "a:maj/b")
   expect_equal(lp_chord_id("a", "mM7"), "a:m7+")
 })
@@ -46,4 +49,9 @@ test_that("chord_def returns as expected", {
   expect_equal(x2$optional, "e'")
   x3 <- purrr::map_dfr(c(0, 2, 3), ~chord_def(frets + .x, "M"))
   expect_equal(x3$lp_name, c("a,:5", "b,:5", "c:5"))
+  frets <- c(NA, 9, 11, 11, 10, 9)
+  x1 <- chord_def(frets, "M")
+  x2 <- chord_def(frets, "M", 6)
+  expect_true(is.na(x1$optional))
+  expect_equal(x2$optional, "c#''")
 })

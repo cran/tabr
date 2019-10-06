@@ -9,11 +9,9 @@
 [![gitter](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/leonawicz/tabr)
 <br/> **License:** [MIT](https://opensource.org/licenses/MIT)<br/>
 
-[![CRAN
-status](http://www.r-pkg.org/badges/version/tabr)](https://cran.r-project.org/package=tabr)
-[![CRAN
-downloads](http://cranlogs.r-pkg.org/badges/grand-total/tabr)](https://cran.r-project.org/package=tabr)
-[![Rdoc](http://www.rdocumentation.org/badges/version/tabr)](http://www.rdocumentation.org/packages/tabr)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![Travis-CI Build
 Status](https://travis-ci.org/leonawicz/tabr.svg?branch=master)](https://travis-ci.org/leonawicz/tabr)
 [![AppVeyor Build
@@ -21,33 +19,71 @@ Status](https://ci.appveyor.com/api/projects/status/github/leonawicz/tabr?branch
 [![Coverage
 Status](https://img.shields.io/codecov/c/github/leonawicz/tabr/master.svg)](https://codecov.io/github/leonawicz/tabr?branch=master)
 
-## Overview
+[![CRAN
+status](http://www.r-pkg.org/badges/version/tabr)](https://cran.r-project.org/package=tabr)
+[![CRAN
+downloads](http://cranlogs.r-pkg.org/badges/grand-total/tabr)](https://cran.r-project.org/package=tabr)
+[![Github
+Stars](https://img.shields.io/github/stars/leonawicz/tabr.svg?style=social&label=Github)](https://github.com/leonawicz/tabr)
 
-<p style="text-align:center;">
+## Overview <img src="https://github.com/leonawicz/tabr/blob/master/data-raw/tabr_logo.png?raw=true" width=320 style="float:right;margin-left:10px;width:320px;">
 
-<img src="https://github.com/leonawicz/tabr/blob/master/data-raw/tabr_logo.png?raw=true" width="400px" align="center">
+The `tabr` package provides a music notation syntax and a collection of
+music programming functions for generating, manipulating, organizing and
+analyzing musical information in R. The music notation framework
+facilitates creating and analyzing music data in notation form.
 
-</p>
+Music programming in the notation syntax provided by `tabr` can be used
+for a variety of purposes, but it also integrates cohesively with the
+package’s transcription functions. The package also provides API wrapper
+functions for transcribing music notation in R into guitar tablature
+(“tabs”) using [LilyPond](http://lilypond.org/).
 
-<br/>
+LilyPond is an open source music engraving program for generating high
+quality sheet music based on markup syntax. `tabr` generates LilyPond
+files from R code and can pass them to LilyPond to be rendered into
+sheet music pdf files from R. While LilyPond caters to sheet music in
+general and `tabr` can be used to create basic sheet music, the
+transcription functions focus on leveraging LilyPond specifically for
+creating quality guitar tablature.
 
-Create guitar tablature (“tabs”) from R code with `tabr`. The `tabr`
-package provides programmatic music notation and a wrapper around
-[LilyPond](http://lilypond.org/) for creating quality guitar tablature.
+While LilyPond is listed as a system requirement for `tabr`, you can use
+many package functions without installing LilyPond if you do not intend
+to render tabs.
 
-`tabr` offers functions for describing and organizing musical structures
-and wraps around the LilyPond backend. LilyPond is an open source music
-engraving program for generating high quality sheet music based on
-markup syntax. `tabr` generates files following the LilyPond markup
-syntax to be subsequently processed by LilyPond into sheet music.
+### Use case considerations
 
-A standalone LilyPond (.ly) file can be created or the package can make
-a system call to LilyPond directly to render the guitar tablature output
-(pdf or png). While LilyPond caters to sheet music in general, `tabr` is
-focused on leveraging it specifically for creating quality guitar
-tablature.
+`tabr` offers a useful but limited LilyPond API and is not intended to
+access all LilyPond functionality from R, nor is transcription via the
+API the entire scope of `tabr`. If you are only creating sheet music on
+a case by case basis, write your own LilyPond files manually. There is
+no need to use `tabr` or limit yourself to its existing LilyPond API or
+it’s guitar tablature focus.
 
-## Functionality and support
+However, if you are generating music notation programmatically, `tabr`
+provides the ability to do so in R and offers the added benefit of
+converting what you write in R code to the LilyPond file format to be
+rendered as printable sheet music.
+
+With ongoing development, the music programming side of `tabr` will
+likely continue to grow much more than the transcription functionality.
+
+### Why LilyPond for transcription?
+
+LilyPond is an exceptional sheet music engraving program.
+
+  - It produces professional, high quality output.
+  - It is open source.
+  - It offers a command line access point for a programmatic approach to
+    music notation.
+  - It is developed and utilized by a large community.
+  - Most GUI-based applications are WYSIWYG and force a greater
+    limitation on what you can do and what it will look like after you
+    do it. It is only for the better that `tabr` is the bottleneck in
+    transcription limitations rather than the music engraving software
+    it wraps around.
+
+### Functionality and support
 
 The `tabr` package offers the following:
 
@@ -61,6 +97,8 @@ The `tabr` package offers the following:
   - Offers inclusion (or exclusion) of formal music staves above tab
     staves, such as treble and bass clef staves for complete rhythm and
     timing information.
+  - If music staff is included, the tab staff can be suppressed, e.g.,
+    for vocal tracks.
   - Track-specific setup for features like instrument type, tuning and
     supplemental music staves.
   - Provides common notation such as slide, bend, hammer on, pull off,
@@ -79,15 +117,6 @@ The `tabr` package offers the following:
     string/fret combinations (along with key signature and instrument
     tuning) to map to pitch.
 
-Note that MIDI support and string/fret alternative input format support
-are not prioritized in ongoing `tabr` development. These are considered
-tangential extra features in `tabr` that fall outside the general scope
-and intent of the package.
-
-In additional to the R to LilyPond sheet music pipeline, `tabr` also
-offers a large collection of functions to support general music
-programming operations.
-
 ## Installation
 
 You can install tabr from CRAN with:
@@ -103,7 +132,89 @@ You can install tabr from GitHub with:
 remotes::install_github("leonawicz/tabr")
 ```
 
-## Basic example
+## Noteworthy strings
+
+As a quick introduction and to get oriented to the music notation syntax
+offered by `tabr`, consider the concept of a noteworthy string. This is
+like any other character string, except that what makes a string
+noteworthy is that its content consists strictly of valid `tabr` music
+notation syntax. It can be parsed unambiguously and meaningfully into a
+musical phrase (see next section) and can be processed as input to the
+various package functions that inspect and manipulate musical
+information.
+
+A simple character string like `"c e g"`, or alternatively as a vector,
+`c("c", "e", "g")`, is a noteworthy string. Even `"a"` is noteworthy. So
+are `"a#"` and `"a_"` (sharp and flat). However, `"A"` is not, nor is
+`"Z"`. There are other pieces of valid syntax than just the lowercase
+letters `a` through `g` and sharp and flat notation. See the package
+vignettes for details.
+
+Noteworthiness can be checked on any character string. No supplemental
+class is required. When defining noteworthy strings you can define them
+like any other character vector. However, you will notice that package
+functions that operate on noteworthy strings and whose output is another
+noteworthy string will yield a string with the supplemental `noteworthy`
+class. This has its own print and summary methods. If you remove the
+class with a common R operation like `as.character()`, it does not
+impact any subsequent musical manipulation beyond the need to reperform
+a noteworthy check.
+
+``` r
+x <- "g#4 c5 d#5 g#4c5d#5"
+as_noteworthy(x)
+#> <Noteworthy string>
+#>   Format: space-delimited time
+#>   Values: g#4 c5 d#5 <g#4c5d#5>
+
+is_note(x)
+#> [1]  TRUE  TRUE  TRUE FALSE
+is_chord(x)
+#> [1] FALSE FALSE FALSE  TRUE
+chord_is_major(x)
+#> [1]   NA   NA   NA TRUE
+(x <- transpose(x, 1))
+#> <Noteworthy string>
+#>   Format: space-delimited time
+#>   Values: a4 c#5 e5 <a4c#5e5>
+
+summary(x)
+#> <Noteworthy string>
+#>   Timesteps: 4 (3 notes, 1 chord)
+#>   Octaves: integer
+#>   Accidentals: sharp
+#>   Format: space-delimited time
+#>   Values: a4 c#5 e5 <a4c#5e5>
+
+distinct_pitches(x)
+#> <Noteworthy string>
+#>   Format: space-delimited time
+#>   Values: a4 c#5 e5
+distinct_pitches(x) %>% pitch_freq() # in Hz
+#> [1] 440.0000 554.3653 659.2551
+```
+
+`tabr` offers many functions for manipulating musical structures defined
+in music notation. See the vignettes for more information on music
+programming.
+
+## Basic transcription example
+
+Rendering sheet music is based on building up pieces of musical
+information culminating in a score. The fundamental object to consider
+in the transcription context is a phrase. A phrase is created from a
+noteworthy string and incorporates additional information, most
+importantly time and rhythm. It can also include positional information
+such as the instrument string on which a note is played. Outside of
+rendering tabs, there is no reason to construct phrase objects.
+Everything from the phrase object on up is about using the R to LilyPond
+pipeline to render some kind of sheet music document.
+
+If you doing music analysis on noteworthy strings and are combining the
+note, pitch or chord information with time, that can be done with a
+corresponding variable; using a phrase object is not the way to do that
+because phrase objects are intended for the construction of LilyPond
+markup syntax.
 
 As a brief example, recreate the tablature shown in the image above
 (minus the R logo). Here are the steps.
@@ -115,7 +226,7 @@ As a brief example, recreate the tablature shown in the image above
 
 The code is shown below, but first some context.
 
-## Constructing a musical phrase
+### Constructing a musical phrase
 
 A phrase here does not require a strict definition. Think of it as the
 smallest piece of musical structure you intend to string together. The
@@ -161,7 +272,7 @@ While explicit string numbers are not needed for this example, they are
 provided anyway for full context. Dropping the `string` argument would
 further reduce typing.
 
-## Score metadata and accessing LilyPond
+### Score metadata and accessing LilyPond
 
 Finally, specify some song metadata to reproduce the original staff: the
 key of D minor, common time, and the tempo.
@@ -175,7 +286,7 @@ LilyPond executable is at `C:/Program Files
 (x86)/LilyPond/usr/bin/lilypond.exe`, then add `C:/Program Files
 (x86)/LilyPond/usr/bin` to the system path.
 
-## R code
+### R code
 
 ``` r
 library(tabr)
@@ -199,8 +310,26 @@ p("r a2 c f d a f", "4 8*6", "x 5 5 4 4 3 4") %>% track %>% score %>%
     #> Converting to `./phrase.pdf'...
     #> Success: compilation successfully completed
 
-See the pdf result embedded at the [tabr
-website](https://leonawicz.github.io/tabr/).
+<br/>
+
+For comparison, if you were using string-fret specification to construct
+the above phrase, one way to do so is the following:
+
+``` r
+sfp("r;r;4 5;0;8 3 4;3; 0 3;2; 4;3;")
+#> <Musical phrase>
+#> r4 <a,\5>8 <c\5>8 <f\4>8 <d\4>8 <a\3>8 <f\4>8
+```
+
+It may not look particularly beneficial here, but for more complex music
+it can be easier to reason about the phrase under construction when
+using this format to bind information by time step rather. See
+`?sf_phrase` for a comparison with `phrase` and the various ways you can
+do phrase construction in `tabr` for equivalent results. If you are
+looking to do quick, easy and basic tabbing, you may want to consider
+using the single-argument input method of the `sf_phrase` function. The
+package vignettes focus on general use cases using the `phrase` function
+rather than `sf_phrase`.
 
 Note above that `tabr` also exports the pipe `%>%` operator. Even given
 the hierarchy of objects involved in the series of steps to move from a
@@ -211,51 +340,16 @@ still forcing some sense of interpretable, organized structure. For long
 and complex music, it can require some effort and practice to ensure
 your approach to transcription in your R code is not opaque.
 
-## Additional context
-
-Why LilyPond? LilyPond is an exceptional sheet music engraving program.
-
-  - It produces professional, high quality output.
-  - It is open source.
-  - It offers a command line access point for a programmatic approach to
-    music notation.
-  - It is developed and utilized by a large community.
-  - Most GUI-based applications are WYSIWYG and force a greater
-    limitation on what you can do and what it will look like after you
-    do it.
-
-## Limitations
-
-This package is not intended to access all LilyPond functionality from
-R. If your transcription needs are that great, just use LilyPond
-directly. However, when working in R, `tabr` gives you programmatic
-access to LilyPond that is quite valuable.
-
-## New in v 0.3.0: more music programming support
-
-Version 0.3.0 of `tabr` adds many new helper functions. These functions
-do not directly impact the `tabr`-LilyPond sheet music pipeline. They
-expand music programming with `tabr` more generally and can be used
-without LilyPond installed. LilyPond is only required for sheet music
-engraving. So even if you do not need to create tabs from R code, the
-broader suite of `tabr` functions may be useful to you.
-
-Note: I was hopeful that this version of `tabr` would be able to
-leverage a new, native bend engraver in LilyPond, but it appears that on
-the LilyPond side this development has not progressed since I last
-checked.
-
 ## References and resources
 
-There is a rich collection of vignette tutorials and examples as well as
-complete package documentation available at the `tabr`
+There are several vignette tutorials and examples at the `tabr`
 [website](https://leonawicz.github.io/tabr/).
 
 <img src="https://raw.githubusercontent.com/r-music/site/master/img/logo.png" style="float:left;margin-right:20px;" width="120">
 
 <div>
 
-<h3 style="margin-bottom:5px;">
+<h3 style="padding-top:50px;">
 
 R-Music
 
@@ -269,7 +363,7 @@ R for music data extraction and analysis
 
 See the <a href="https://github.com/r-music">R-Music</a> organization on
 GitHub for more R packages related to music data extraction and
-analysis. The R-Music <a href="https://r-music.rbind.io/">blog</a>
+analysis.<br/> The R-Music <a href="https://r-music.rbind.io/">blog</a>
 provides package introductions and examples.
 
 </div>
@@ -279,3 +373,9 @@ provides package introductions and examples.
   - The [tuneR](https://CRAN.R-project.org/package=tuneR) package for
     analysis of music and speech by Uwe Ligges, Sebastian Krey, Olaf
     Mersmann, and Sarah Schnackenberg.
+
+-----
+
+Please note that this project is released with a [Contributor Code of
+Conduct](https://leonawicz.github.io/tabr/CODE_OF_CONDUCT.html). By
+participating in this project you agree to abide by its terms.

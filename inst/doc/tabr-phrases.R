@@ -49,15 +49,15 @@ phrase("c,, c, c c' c''", "1*5")
 #    track %>% score %>% tab("ex08.pdf")
 
 ## ----p9, results="hide", eval=FALSE--------------------------------------
-#  notes <- glue("c3 b2 c3 d3 e3 e3 d3 c3 b2 c3 c3 c4", "c4 b3 c4 d4 e4 e4 d4 c4 b3 c4 c4 c5")
-#  info <- dup("8( 8)( 4) 8( 8) 8( 8) 8 8( 8) 4.- 4", 2)
+#  notes <- pc("c3 b2 c3 d3 e3 e3 d3 c3 b2 c3 c3 c4", "c4 b3 c4 d4 e4 e4 d4 c4 b3 c4 c4 c5")
+#  info <- pn("8( 8)( 4) 8( 8) 8( 8) 8 8( 8) 4.- 4", 2)
 #  strings <- "5*12 3*12"
 #  phrase(notes, info, strings) %>% track %>% score %>% tab("ex09.pdf")
 
 ## ----p10, results="hide", eval=FALSE-------------------------------------
-#  notes <- glue("r a2 c3 f3 d3 a3 f3 b3~ b3~ b3", "r a3 c4 d4 a3 f4 d4 g4~ g4~ g4")
-#  info <- dup("4 8 8 8 8 8 8 16^ 16 2..^", 2)
-#  strings <- glue("x 5 5 4 4 3 4 3 3 3", "x 4 3 3 4 2 3 2 2 2")
+#  notes <- pc("r a2 c3 f3 d3 a3 f3 b3~ b3~ b3", "r a3 c4 d4 a3 f4 d4 g4~ g4~ g4")
+#  info <- pn("4 8 8 8 8 8 8 16^ 16 2..^", 2)
+#  strings <- pc("x 5 5 4 4 3 4 3 3 3", "x 4 3 3 4 2 3 2 2 2")
 #  phrase(notes, info, strings) %>% track %>% score %>% tab("ex10.pdf")
 
 ## ----p11, results="hide", eval=FALSE-------------------------------------

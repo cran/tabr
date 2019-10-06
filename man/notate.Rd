@@ -17,13 +17,17 @@ notate(x, text, position = "top")
 a character string.
 }
 \description{
-Annotate a music staff, vertically aligned above or below the music staff at a specific note/time.
+Annotate a music staff, vertically aligned above or below the music staff at
+a specific note/time.
 }
 \details{
-This function binds text annotation in LilyPond syntax to a note's associated \code{info} entry.
-Technically, the syntax is a hybrid form, but is later updated safely and unambiguously to LilyPond syntax with respect to the rest of the note info substring when it is fed to \code{phrase} for musical phrase assembly.
+This function binds text annotation in LilyPond syntax to a note's
+associated \code{info} entry.
+Technically, the syntax is a hybrid form, but is later updated safely and
+unambiguously to LilyPond syntax with respect to the rest of the note info
+substring when it is fed to \code{phrase} for musical phrase assembly.
 }
 \examples{
 notate("8", "Solo")
-phrase("c'~ c' d' e'", glue(notate(8, "First solo"), "8 8 4."), "5 5 5 5")
+phrase("c'~ c' d' e'", pc(notate(8, "First solo"), "8 8 4."), "5 5 5 5")
 }

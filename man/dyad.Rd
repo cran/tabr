@@ -4,18 +4,19 @@
 \alias{dyad}
 \title{Construct a dyad}
 \usage{
-dyad(notes, interval, reverse = FALSE, key = "c", collapse = FALSE)
+dyad(notes, interval, reverse = FALSE, key = "c")
 }
 \arguments{
-\item{notes}{character, vector of single notes (not a single space-delimited string).}
+\item{notes}{character, a noteworthy string, single notes only, no chords.
+Number of timesteps must equal the length of \code{interval}.}
 
-\item{interval}{integer or character vector; semitones or interval ID, respectively. See details.}
+\item{interval}{integer or character vector; semitones or interval ID,
+respectively. See details.}
 
-\item{reverse}{logical, reverse the transposition direction. Useful when \code{interval} is character.}
+\item{reverse}{logical, reverse the transposition direction. Useful when
+\code{interval} is character.}
 
 \item{key}{character, key signature.}
-
-\item{collapse}{logical, collapse result into a single string ready for phrase construction.}
 }
 \value{
 character
@@ -24,10 +25,14 @@ character
 Construct a dyad given one note, an interval, and a direction.
 }
 \details{
-The \code{interval} may be specified by semitones of by common interval name or abbreviation. See examples.
-For a complete list of valid interval names and abbreviations see \code{\link{mainIntervals}}.
-\code{key} enforces the use of sharps or flats. This function is based on \code{transpose}.
-\code{notes} and \code{interval} may be vectors, but must be equal length. Recycling occurs only if one argument is scalar.
+The \code{interval} may be specified by semitones of by common interval name
+or abbreviation. See examples.
+For a complete list of valid interval names and abbreviations see
+\code{\link{mainIntervals}}.
+\code{key} enforces the use of sharps or flats. This function is based on
+\code{transpose}.
+\code{notes} and \code{interval} may be vectors, but must be equal length.
+Recycling occurs only if one argument is scalar.
 }
 \examples{
 dyad("a", 4)
@@ -41,6 +46,7 @@ dyad(letters[c(3:7, 1, 2)], x)
 x <- c("P1", "m3", "M3", "P4", "P5", "P8", "M9")
 dyad("c", x)
 dyad("c", x, reverse = TRUE)
+dyad("d e", "m3")
 }
 \seealso{
 \code{\link{mainIntervals}}

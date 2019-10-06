@@ -1,3 +1,20 @@
+# tabr 0.3.5
+
+* Added alternate input specification for `sf_phrase`. Instead of providing the first three function arguments, `string`, `fret` and `info`, separately, you can now provide everything to the first input `string` as a single character string containing all three components separated by semicolons. This makes it easier to reason about the input by time step rather than by argument.
+* Added chord helpers: `chord_root`, `chord_top`, `chord_slice`, `chord_is_major`, `chord_is_minor`.
+* Added notation-frequency conversion helpers: `pitch_freq`, `freq_pitch` and other related functions.
+* Added several more functions for inspecting and manipulating noteworthy strings.
+* Code and documentation formatting and style overhaul based on stricter linting rules.
+* Updated documentation and unit tests.
+
+# tabr 0.3.1
+
+* Added `no_tab` argument to `track` allowing for suppression of tab staff when music staff is included, e.g., for vocal tracks.
+* `no_tab`-associated documentation and unit test updates.
+* Deprecated `dup` and `glue`. Now use `pn` for repeating phrases `n` times and `pc` for concatenating multiple phrases.
+* Updated documentation, examples, vignettes and unit tests.
+* Minor bug fixes.
+
 # tabr 0.3.0
 
 * Added `fretboard_plot` for making fretboard diagrams outside of the LilyPond tablature pipeline. This necessitates importing `ggplot2`.

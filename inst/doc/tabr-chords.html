@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -94,7 +95,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -385,7 +386,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>In order to place chord symbols in time above a music staff, it is necessary to specify their sequence and the duration of each chord, just like is required for all the notes and chords shown inside the staff that are created from a sequence of phrase objects. The two examples below uses a simple melody of arpeggiated, broken chords played using the chords C, F and G. Those chord symbols are shown above the staff at the appropriate point in time based on the defined chord sequence.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">notes &lt;-<span class="st"> &quot;c e g c&#39; e&#39; c&#39; g e g b d&#39; g&#39; f a c&#39; f&#39; c e g e c&quot;</span></a>
 <a class="sourceLine" id="cb10-2" title="2">info &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;8*20 2&quot;</span>, <span class="st">&quot;4*20 1&quot;</span>)</a>
-<a class="sourceLine" id="cb10-3" title="3">strings &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="kw">c</span>(<span class="dv">5</span><span class="op">:</span><span class="dv">1</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">1</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">1</span>, <span class="dv">5</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">5</span>)) <span class="co"># almost not needed, but for 1st 2 notes of G chord</span></a>
+<a class="sourceLine" id="cb10-3" title="3">strings &lt;-<span class="st"> </span><span class="kw">pc</span>(<span class="kw">c</span>(<span class="dv">5</span><span class="op">:</span><span class="dv">1</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">1</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">1</span>, <span class="dv">5</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">5</span>)) <span class="co"># almost not needed, but for 1st 2 notes of G chord</span></a>
 <a class="sourceLine" id="cb10-4" title="4">p1 &lt;-<span class="st"> </span><span class="kw">p</span>(notes, info[<span class="dv">1</span>], strings)</a>
 <a class="sourceLine" id="cb10-5" title="5">p2 &lt;-<span class="st"> </span><span class="kw">p</span>(notes, info[<span class="dv">2</span>], strings)</a>
 <a class="sourceLine" id="cb10-6" title="6">chords &lt;-<span class="st"> </span><span class="kw">chord_set</span>(<span class="kw">c</span>(<span class="dt">c =</span> <span class="st">&quot;x32o1o&quot;</span>, <span class="dt">f =</span> <span class="st">&quot;xx3211&quot;</span>, <span class="dt">g =</span> <span class="st">&quot;xx5433&quot;</span>, <span class="dt">r =</span> <span class="ot">NA</span>, <span class="dt">s =</span> <span class="ot">NA</span>))</a></code></pre></div>
@@ -421,6 +422,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

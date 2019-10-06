@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -103,7 +104,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -596,22 +597,22 @@ e,, a,, d, g,
 <p>Tuning for a track defaults to standard tuning on a six string guitar. The following calls are equivalent and result in the same explicit tuning stored in each of the the track tables.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">p1 &lt;-<span class="st"> </span><span class="kw">p</span>(<span class="st">&quot;a&quot;</span>, <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb2-2" title="2"><span class="kw">track</span>(p1, <span class="dt">tuning =</span> <span class="st">&quot;standard&quot;</span>)</a></code></pre></div>
-<pre class="r-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 6</span><span>
-#&gt;   phrase   tuning         voice staff    ms_transpose ms_key
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;list&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
-#&gt; </span><span style="color: #555555;">1</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e, a, d g b e&#39;     1 treble_8            0 </span><span style="color: #BB0000;">NA</span><span>
+<pre class="r-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 7</span><span>
+#&gt;   phrase   tuning         voice staff    ms_transpose ms_key tab  
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;list&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>
+#&gt; </span><span style="color: #555555;">1</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e, a, d g b e&#39;     1 treble_8            0 </span><span style="color: #BB0000;">NA</span><span>     TRUE
 </span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">track</span>(p1, <span class="dt">tuning =</span> <span class="st">&quot;e2 a2 d g b e4&quot;</span>)</a></code></pre></div>
-<pre class="r-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 6</span><span>
-#&gt;   phrase   tuning         voice staff    ms_transpose ms_key
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;list&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
-#&gt; </span><span style="color: #555555;">1</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e, a, d g b e&#39;     1 treble_8            0 </span><span style="color: #BB0000;">NA</span><span>
+<pre class="r-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 7</span><span>
+#&gt;   phrase   tuning         voice staff    ms_transpose ms_key tab  
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;list&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>
+#&gt; </span><span style="color: #555555;">1</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e, a, d g b e&#39;     1 treble_8            0 </span><span style="color: #BB0000;">NA</span><span>     TRUE
 </span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">track</span>(p1, <span class="dt">tuning =</span> <span class="st">&quot;e, a, d g b e&#39;&quot;</span>)</a></code></pre></div>
-<pre class="r-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 6</span><span>
-#&gt;   phrase   tuning         voice staff    ms_transpose ms_key
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;list&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
-#&gt; </span><span style="color: #555555;">1</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e, a, d g b e&#39;     1 treble_8            0 </span><span style="color: #BB0000;">NA</span><span>
+<pre class="r-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1 x 7</span><span>
+#&gt;   phrase   tuning         voice staff    ms_transpose ms_key tab  
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;list&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>
+#&gt; </span><span style="color: #555555;">1</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e, a, d g b e&#39;     1 treble_8            0 </span><span style="color: #BB0000;">NA</span><span>     TRUE
 </span></code></pre>
 </div>
 <div id="number-of-strings" class="section level2">
@@ -627,12 +628,12 @@ e,, a,, d, g,
 <a class="sourceLine" id="cb5-5" title="5">                    <span class="kw">track</span>(bass, <span class="st">&quot;bass&quot;</span>, <span class="dt">music_staff =</span> <span class="ot">NA</span>), </a>
 <a class="sourceLine" id="cb5-6" title="6">                    <span class="kw">track</span>(one_string, <span class="st">&quot;c&#39;&quot;</span>, <span class="dt">music_staff =</span> <span class="ot">NA</span>))</a>
 <a class="sourceLine" id="cb5-7" title="7">tracks</a></code></pre></div>
-<pre class="r-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 7</span><span>
-#&gt;   phrase   tuning         voice staff ms_transpose ms_key tabstaff
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;list&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e, a, d g b e&#39;     1 </span><span style="color: #BB0000;">NA</span><span>               0 </span><span style="color: #BB0000;">NA</span><span>            1
-#&gt; </span><span style="color: #555555;">2</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e,, a,, d, g,      1 </span><span style="color: #BB0000;">NA</span><span>               0 </span><span style="color: #BB0000;">NA</span><span>            2
-#&gt; </span><span style="color: #555555;">3</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> c&#39;                 1 </span><span style="color: #BB0000;">NA</span><span>               0 </span><span style="color: #BB0000;">NA</span><span>            3
+<pre class="r-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 8</span><span>
+#&gt;   phrase   tuning         voice staff ms_transpose ms_key tab   tabstaff
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;list&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
+#&gt; </span><span style="color: #555555;">1</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e, a, d g b e&#39;     1 </span><span style="color: #BB0000;">NA</span><span>               0 </span><span style="color: #BB0000;">NA</span><span>     TRUE         1
+#&gt; </span><span style="color: #555555;">2</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e,, a,, d, g,      1 </span><span style="color: #BB0000;">NA</span><span>               0 </span><span style="color: #BB0000;">NA</span><span>     TRUE         2
+#&gt; </span><span style="color: #555555;">3</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> c&#39;                 1 </span><span style="color: #BB0000;">NA</span><span>               0 </span><span style="color: #BB0000;">NA</span><span>     TRUE         3
 </span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">score</span>(tracks) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tab</span>(<span class="st">&quot;out.pdf&quot;</span>)</a></code></pre></div>
 <p>
@@ -644,12 +645,12 @@ e,, a,, d, g,
 <a class="sourceLine" id="cb7-2" title="2">                    <span class="kw">track</span>(bass, <span class="st">&quot;bass&quot;</span>, <span class="dt">music_staff =</span> <span class="st">&quot;bass_8&quot;</span>), </a>
 <a class="sourceLine" id="cb7-3" title="3">                    <span class="kw">track</span>(one_string, <span class="st">&quot;c&#39;&quot;</span>, <span class="dt">music_staff =</span> <span class="st">&quot;treble&quot;</span>))</a>
 <a class="sourceLine" id="cb7-4" title="4">tracks</a></code></pre></div>
-<pre class="r-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 7</span><span>
-#&gt;   phrase   tuning         voice staff    ms_transpose ms_key tabstaff
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;list&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e, a, d g b e&#39;     1 treble_8            0 </span><span style="color: #BB0000;">NA</span><span>            1
-#&gt; </span><span style="color: #555555;">2</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e,, a,, d, g,      1 bass_8              0 </span><span style="color: #BB0000;">NA</span><span>            2
-#&gt; </span><span style="color: #555555;">3</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> c&#39;                 1 treble              0 </span><span style="color: #BB0000;">NA</span><span>            3
+<pre class="r-output"><code>#&gt; <span style="color: #555555;"># A tibble: 3 x 8</span><span>
+#&gt;   phrase   tuning         voice staff    ms_transpose ms_key tab   tabstaff
+#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;list&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>           </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
+#&gt; </span><span style="color: #555555;">1</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e, a, d g b e&#39;     1 treble_8            0 </span><span style="color: #BB0000;">NA</span><span>     TRUE         1
+#&gt; </span><span style="color: #555555;">2</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> e,, a,, d, g,      1 bass_8              0 </span><span style="color: #BB0000;">NA</span><span>     TRUE         2
+#&gt; </span><span style="color: #555555;">3</span><span> </span><span style="color: #555555;">&lt;phrase&gt;</span><span> c&#39;                 1 treble              0 </span><span style="color: #BB0000;">NA</span><span>     TRUE         3
 </span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">score</span>(tracks) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tab</span>(<span class="st">&quot;out.pdf&quot;</span>)</a></code></pre></div>
 <p>
@@ -661,6 +662,9 @@ e,, a,, d, g,
 <p>Although <code>tabr</code> infers the an instrument’s number of strings from its tuning, there are limitations. Chord fretboard diagrams are only supported for guitar, six string guitar specifically. If attempting to pass four or five strings of information to <code>chord_set</code> for bass, ukulele or banjo for example, this will incompletely fill in a six string guitar fretboard diagram in the chord chart of the output. Similarly, if attempting to provide seven strings for a seven string guitar, the chord chart will show the additional note, but it will be floating to the side of the chart. A seventh string line is not added to the diagram. Number of strings inferred from instrument tuning displays in the tablature staff, but does not generalize to fretboard diagrams.</p>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

@@ -14,7 +14,7 @@ p1 <- p("c e g c' e' c' g e", 8, "5 4 3 2 1 2 3 4")
 p2 <- p("g b d' g'", 8, "4 3 2 1")
 p3 <- p("f a c' f'", 8, "4 3 2 1")
 p4 <- p("c e g e c", "8*4 2", "5 4 3 4 5")
-p_all <- glue(p1, p2, p3, p4)
+p_all <- pc(p1, p2, p3, p4)
 track(p_all) %>% score
 
 ## ----track1--------------------------------------------------------------
@@ -77,7 +77,8 @@ t3 <- track(p1, tuning = "dropC")
 ## ----track8--------------------------------------------------------------
 t1 <- track(rp(p_all2, 2), voice = 1)
 t2 <- track(rp(p_all, 2), voice = 2)
-t3 <- track(rp(p("c2e2*4 g1*2 f1*2 c2e2*3", "4*10 2", "32*4 4*4 32*3"), 2), tuning = "bass", music_staff = "bass_8")
+t3 <- track(rp(p("c2e2*4 g1*2 f1*2 c2e2*3", "4*10 2", "32*4 4*4 32*3"), 2), 
+            tuning = "bass", music_staff = "bass_8")
 t_all <- trackbind(t1, t2, t3, tabstaff = c(1, 1, 2))
 t_all
 
