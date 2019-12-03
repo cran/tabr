@@ -7,23 +7,42 @@
 \alias{sfn}
 \title{Create a musical phrase from string/fret combinations}
 \usage{
-sf_phrase(string, fret = NULL, info = NULL, key = "c",
-  tuning = "standard", to_notes = FALSE, bar = FALSE)
+sf_phrase(
+  string,
+  fret = NULL,
+  info = NULL,
+  key = "c",
+  tuning = "standard",
+  to_notes = FALSE,
+  bar = FALSE
+)
 
-sfp(string, fret = NULL, info = NULL, key = "c",
-  tuning = "standard", to_notes = FALSE, bar = FALSE)
+sfp(
+  string,
+  fret = NULL,
+  info = NULL,
+  key = "c",
+  tuning = "standard",
+  to_notes = FALSE,
+  bar = FALSE
+)
 
 sf_note(...)
 
 sfn(...)
 }
 \arguments{
-\item{string}{character, string numbers associated with notes, or provide
-all information here and ignore \code{fret} and \code{info}. See details.}
+\item{string}{character, space-delimited or vector. String numbers
+associated with notes. Alternatively, provide all information here in a
+single space-delimited string and ignore \code{fret} and \code{info}. See
+details.}
 
-\item{fret}{character, fret numbers associated with notes.}
+\item{fret}{character, space-delimited or vector (or integer vector) of fret
+numbers associated with notes. Same number of timesteps as \code{string}.}
 
-\item{info}{character, metadata associated with notes.}
+\item{info}{character, space-delimited or vector (or integer vector if simple
+durations) giving metadata associated with notes. Same number of timesteps as
+\code{string}.}
 
 \item{key}{character, key signature or just specify \code{"sharp"} or
 \code{"flat"}.}
@@ -161,12 +180,12 @@ both input methods for \code{sf_phrase}.
 
 \examples{
 sf_phrase("5 4 3 2 1", "1 3 3 3 1", "8*4 1", key = "b_")
-sf_phrase("654321 6s 12 1 21", "133211 355333 11 (13) (13)(13)", "4 4 8 8 4",
+sf_phrase("6 6 12 1 21", "133211 355333 11 (13) (13)(13)", "4 4 8 8 4",
           key = "f")
-sfp("6s*2 1*4", "000232*2 2*4", "4 4 8*4", tuning = "dropD", key = "d")
+sfp("6*2 1*4", "000232*2 2*4", "4 4 8*4", tuning = "dropD", key = "d")
 
 # compare with single-argument input
-s <- "3s*5 53~*3 543*2 643"
+s <- "3*5 53~*3 543*2 643"
 f <- "987*2 775 553 335 77~*3 545 325 210"
 i <- "2*3 4. 16 4.*3 4*3"
 p1 <- sfp(s, f, i)

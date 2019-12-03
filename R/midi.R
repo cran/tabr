@@ -50,11 +50,7 @@
 #' @param explicit logical, print explicit durations.
 #' @param start_quant integer, duration, quantize note starts on the duration.
 #' @param allow_tuplet character vector, allow tuplet durations. See details.
-#' @param details logical, verbose detail.
 #' @param lyric logical, treat all text as lyrics.
-#' @param path character, optional output directory prefixed to \code{file},
-#' may be an absolute or relative path. If \code{NULL} (default), only
-#' \code{file} is used.
 #'
 #' @return nothing returned; a file is written.
 #' @export
@@ -70,9 +66,8 @@
 #' }
 midily <- function(midi_file, file, key = "c", absolute = FALSE,
                    quantize = NULL, explicit = FALSE, start_quant = NULL,
-                   allow_tuplet = c("4*2/3", "8*2/3", "16*2/3"),
-                   details = FALSE,
-                   lyric = FALSE, path = NULL){
+                   allow_tuplet = c("4*2/3", "8*2/3", "16*2/3"), lyric = FALSE){
+  .check_lilypond()
   x <- paste0("--key=", .midily_key(key))
   if(absolute) x <- paste(x, "--absolute-pitches")
   if(!is.null(quantize)) x <- paste(x, paste0("--duration-quant=", quantize))
@@ -84,11 +79,16 @@ midily <- function(midi_file, file, key = "c", absolute = FALSE,
   }
   if(explicit) x <- paste(x, "--verbose")
   if(explicit) x <- paste(x, "--text-lyrics")
+  is_windows <- Sys.info()[["sysname"]] == "Windows"
+  py_path <- tabr_options()$python
+  if(py_path == ""){
+    py_path <- if(is_windows) "python.exe" else "python"
+  }
+  midi2ly_path <- tabr_options()$midi2ly
+  if(midi2ly_path == "") midi2ly_path <- "midi2ly.py"
   system(paste0(
-    "\"", tabr_options()$python, "\" ", "\"",
-    tabr_options()$midi2ly, "\" ", x,
-    " --output=\"",
-    .adjust_file_path(file, path)$lp, "\" \"", midi_file, "\""
+    "\"", py_path, "\" ", "\"", midi2ly_path, "\" ", x, " --output=\"",
+    .adjust_file_path(file)$lp, "\" \"", midi_file, "\""
   ))
   invisible()
 }
@@ -140,11 +140,8 @@ midily <- function(midi_file, file, key = "c", absolute = FALSE,
 #' or relative path.
 #' @param file character, output file ending in .pdf or .png.
 #' @param keep_ly logical, keep LilyPond file.
-#' @param path character, optional output directory prefixed to \code{file},
-#' may be an absolute or relative path. If \code{NULL} (default), only
-#' \code{file} is used.
-#' @param details logical, set to \code{FALSE} to disable printing of log
-#' output to console.
+#' @param details logical, set to \code{TRUE} to print LilyPond log output to
+#' console. Windows only.
 #' @param ... additional arguments passed to \code{\link{midily}}.
 #'
 #' @return nothing returned; a file is written.
@@ -159,15 +156,15 @@ midily <- function(midi_file, file, key = "c", absolute = FALSE,
 #'   miditab(midi, outfile, details = FALSE) # requires LilyPond installation
 #' }
 #' }
-miditab <- function(midi_file, file, keep_ly = FALSE, path = NULL,
-                    details = TRUE, ...){
-  fp <- .adjust_file_path(file, path)
+miditab <- function(midi_file, file, keep_ly = FALSE, details = FALSE, ...){
+  fp <- .adjust_file_path(file)
   if(details) cat("#### Engraving midi to", fp$tp, "####\n")
-  do.call(midily, c(list(midi_file = midi_file, file = basename(fp$lp),
-                         path = dirname(fp$lp)), list(...)))
+  do.call(midily, c(list(midi_file = midi_file, file = fp$lp), list(...)))
   lp_path <- tabr_options()$lilypond
   is_windows <- Sys.info()[["sysname"]] == "Windows"
-  if(lp_path == "" && is_windows) lp_path <- "lilypond.exe"
+  if(lp_path == ""){
+    lp_path <- if(is_windows) "lilypond.exe" else "lilypond"
+  }
   call_string <- paste0("\"", lp_path, "\" --", fp$ext,
                         " -dstrip-output-dir=#f \"", fp$lp, "\"")
   if(is_windows){
@@ -177,4 +174,179 @@ miditab <- function(midi_file, file, keep_ly = FALSE, path = NULL,
   }
   if(!keep_ly) unlink(fp$lp)
   invisible()
+}
+
+#' Read, inspect and convert MIDI file contents
+#'
+#' Read MIDI file into a data frame and inspect the music data with supporting
+#' functions.
+#'
+#' The \code{read_midi} function wraps around \code{tuneR::readMidi} by Uwe
+#' Ligges and Johanna Mielke. \code{midi_notes} is a work in progress, but
+#' converts MIDI data to noteworthy strings and note info formats. This makes
+#' it easy to analyze, transform and edit the music data as well as render it
+#' to sheet music and a new MIDI file.
+#'
+#' \code{read_midi} does not parse the ticks per quarter note from the MIDI
+#' file input at this time. It must be specified with \code{ticks_per_qtr}
+#'
+#' @param file character, path to MIDI file.
+#' @param x a data frame returned by \code{read_midi}. An integer vector for
+#' \code{ticks_to_duration}; a character vector (may be a space-delimited
+#' string) for \code{duration_to_ticks}.
+#' @param ticks_per_qtr ticks per quarter note. Used to compute durations from
+#' MIDI file ticks.
+#' @param channel,track integer, filter rows on channel or track.
+#' @param noteworthy logical, convert to \code{noteworthy} and \code{noteinfo}
+#' data.
+#'
+#' @return a tibble data frame
+#' @export
+#'
+#' @examples
+#' ticks_to_duration(c(120, 160))
+#' ticks_to_duration(c(128, 192, 512), ticks_per_qtr = 384)
+#' duration_to_ticks(c("t8", "8", "8.", "8.."))
+#' duration_to_ticks(c("t8 8 8. 8.."), ticks_per_qtr = 384)
+#'
+#' file <- system.file("example2.mid", package = "tabr")
+#' if(require("tuneR")){
+#'   x <- read_midi(file, ticks_per_qtr = 384)
+#'   midi_metadata(x)
+#'   midi_time(x)
+#'   midi_key(x)
+#'   midi_notes(x, channel = 0, noteworthy = FALSE)
+#'
+#'   (x <- midi_notes(x, channel = 0))
+#'   (x <- as_music(x$pitch, x$duration))
+#'
+#'   # requires LilyPond installation
+#'   if(tabr_options()$lilypond != ""){
+#'     out <- file.path(tempdir(), "out.pdf")
+#'     phrase(x) %>% track_bc() %>% score() %>% tab(out, details = FALSE)
+#'   }
+#' }
+read_midi <- function(file, ticks_per_qtr = 480){
+  if(!requireNamespace("tuneR")){
+    message("Please install the `tuneR` package to read MIDI files.")
+    return(invisible())
+  }
+  mx <- duration_to_ticks(1, ticks_per_qtr)
+  x <- tibble::as_tibble(tuneR::readMidi(file))
+  y <- tuneR::getMidiNotes(x)
+  bycols <- c("channel", "track", "time", parameter1 = "note")
+  d <- dplyr::left_join(x, y, by = bycols) %>%
+    dplyr::select(-c("notename")) %>%
+    dplyr::mutate(
+      pitch = semitone_pitch(.data[["parameter1"]]),
+      pitch = ifelse(.data[["event"]] == "Note On", .data[["pitch"]], NA),
+      duration = ticks_to_duration(.data[["length"]], ticks_per_qtr)) %>%
+    dplyr::select(c("time", "length", "duration", "event", "type", "channel",
+                    "parameter1", "parameter2",
+                    "parameterMetaSystem", "track", "pitch", "velocity"))
+  idx <- which(is.na(d$duration) & d$event == "Note On")
+  if(length(idx)){
+    d$duration[idx] <- purrr::map_chr(d$length[idx], ~{
+      y <- x <- .x
+      while(x > mx){
+        x <- x - mx
+        y <- c(x, y)
+      }
+      paste(ticks_to_duration(y, ticks_per_qtr), collapse = ";")
+    })
+  }
+  d
+}
+
+#' @export
+#' @rdname read_midi
+midi_metadata <- function(x){
+  dplyr::filter(x, !.data[["event"]] %in% c("Note On", "Note Off"))
+}
+
+#' @export
+#' @rdname read_midi
+midi_notes <- function(x, channel = NULL, track = NULL, noteworthy = TRUE){
+  x <- dplyr::filter(x, .data[["event"]] == "Note On") %>%
+    dplyr::rename(semitone = .data[["parameter1"]]) %>%
+    dplyr::select(c("time", "length", "duration", "pitch", "semitone",
+                    "velocity", "channel", "track"))
+
+  if(!is.null(channel))
+    x <- dplyr::filter(x, .data[["channel"]] %in% !! channel)
+  if(!is.null(track))
+    x <- dplyr::filter(x, .data[["track"]] %in% !! track)
+  if(noteworthy){
+    x <- dplyr::group_by(x, .data[["time"]]) %>%
+      dplyr::summarize(
+        duration = unique(.data[["duration"]]),
+        pitch = paste(.data[["pitch"]][order(.data[["semitone"]])],
+                      collapse = "")) %>%
+      dplyr::select(-.data[["time"]])
+    idx <- grep(";", x$duration)
+    if(length(idx)){
+      while(length(idx)){
+        info <- strsplit(x$duration[idx[1]], ";")[[1]]
+        n <- length(info)
+        notes <- rep(x$pitch[idx[1]], n)
+        notes[-n] <- tie(notes[-n])
+        x$duration[idx[1]] <- info[1]
+        x$pitch[idx[1]] <- notes[1]
+        x <- dplyr::add_row(
+          x, "duration" := info[-1], "pitch" := notes[-1], .after = idx[1])
+        idx <- grep(";", x$duration)
+      }
+    }
+    x <- dplyr::mutate(
+      x, duration = as_noteinfo(.data[["duration"]]),
+      pitch = as_noteworthy(.data[["pitch"]])
+    )
+  }
+  x
+}
+
+#' @export
+#' @rdname read_midi
+midi_time <- function(x){
+  unique(x$parameterMetaSystem[x$event == "Time Signature"])
+}
+
+#' @export
+#' @rdname read_midi
+midi_key <- function(x){
+  unique(x$parameterMetaSystem[x$event == "Key Signature"])
+}
+
+#' @export
+#' @rdname read_midi
+ticks_to_duration <- function(x, ticks_per_qtr = 480){
+  y <- .tick_table(ticks_per_qtr)
+  z <- y[match(x, y)]
+  idx <- which(is.na(z))
+  if(length(idx)){
+    z[idx] <- sapply(x[idx], function(x) y[which.min(abs(y - x))])
+    names(z)[idx] <- names(y)[match(z[idx], y)]
+  }
+  names(z)
+}
+
+#' @export
+#' @rdname read_midi
+duration_to_ticks <- function(x, ticks_per_qtr = 480){
+  x <- .uncollapse(x)
+  y <- .tick_table(ticks_per_qtr)
+  z <- as.integer(y[match(x, names(y))])
+  if(any(is.na(z))) stop("Invalid durations found.", call. = FALSE)
+  z
+}
+
+.tick_table <- function(r = 480){
+  x <- r * 2 ^ (-3:2)
+  dot1 <- x[-6] + r * 2 ^ (-4:0)
+  dot2 <- dot1[-6] + r * 2 ^ (-5:-1)
+  trp <- (2 / 3) * x[-6]
+  d <- c(32, 16, 8, 4, 2, 1)
+  x <- c(x, dot1, dot2, trp)
+  names(x) <- c(d, paste0(d[-6], "."), paste0(d[-6], ".."), paste0("t", d[-6]))
+  sort(x)
 }

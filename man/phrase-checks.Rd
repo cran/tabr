@@ -19,9 +19,9 @@ notify(phrase)
 
 phrase_notes(phrase, collapse = TRUE)
 
-phrase_info(phrase, collapse = TRUE)
+phrase_info(phrase, collapse = TRUE, annotations = TRUE)
 
-phrase_strings(phrase, collapse = TRUE)
+phrase_strings(phrase, collapse = FALSE)
 
 notable(phrase)
 }
@@ -30,6 +30,9 @@ notable(phrase)
 
 \item{collapse}{logical, collapse result into a single string ready for
 phrase construction.}
+
+\item{annotations}{logical, strip any text annotations from the note info
+converted from \code{phrase}.}
 }
 \value{
 see details for each function's purpose and return value.
@@ -62,9 +65,9 @@ Complex phrase objects constructed originally with \code{phrase} can be
 challenging to deconstruct in a one to one manner.
 Information may be lost, garbled, or the function may fail.
 For example, this function is not advanced enough to unravel repeat notation
-or handle arbitrary text notations attached to notes.
+or tuplets.
 
-\code{notable} returns \code{TRUE} or \code{FALSE} regarding whether a
+ \code{notable} returns \code{TRUE} or \code{FALSE} regarding whether a
  phrase can be converted back to character string inputs,
  not necessarily with complete correctness, but without simple failure.
  It checks for phrasiness. Then it tries to call \code{notify} and returns

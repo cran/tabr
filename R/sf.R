@@ -114,10 +114,15 @@
 #' See the examples for a comparison of two identical phrases specified using
 #' both input methods for \code{sf_phrase}.
 #'
-#' @param string character, string numbers associated with notes, or provide
-#' all information here and ignore \code{fret} and \code{info}. See details.
-#' @param fret character, fret numbers associated with notes.
-#' @param info character, metadata associated with notes.
+#' @param string character, space-delimited or vector. String numbers
+#' associated with notes. Alternatively, provide all information here in a
+#' single space-delimited string and ignore \code{fret} and \code{info}. See
+#' details.
+#' @param fret character, space-delimited or vector (or integer vector) of fret
+#' numbers associated with notes. Same number of timesteps as \code{string}.
+#' @param info character, space-delimited or vector (or integer vector if simple
+#' durations) giving metadata associated with notes. Same number of timesteps as
+#' \code{string}.
 #' @param key character, key signature or just specify \code{"sharp"} or
 #' \code{"flat"}.
 #' @param tuning character, instrument tuning.
@@ -132,12 +137,12 @@
 #'
 #' @examples
 #' sf_phrase("5 4 3 2 1", "1 3 3 3 1", "8*4 1", key = "b_")
-#' sf_phrase("654321 6s 12 1 21", "133211 355333 11 (13) (13)(13)", "4 4 8 8 4",
+#' sf_phrase("6 6 12 1 21", "133211 355333 11 (13) (13)(13)", "4 4 8 8 4",
 #'           key = "f")
-#' sfp("6s*2 1*4", "000232*2 2*4", "4 4 8*4", tuning = "dropD", key = "d")
+#' sfp("6*2 1*4", "000232*2 2*4", "4 4 8*4", tuning = "dropD", key = "d")
 #'
 #' # compare with single-argument input
-#' s <- "3s*5 53~*3 543*2 643"
+#' s <- "3*5 53~*3 543*2 643"
 #' f <- "987*2 775 553 335 77~*3 545 325 210"
 #' i <- "2*3 4. 16 4.*3 4*3"
 #' p1 <- sfp(s, f, i)
@@ -153,21 +158,28 @@ sf_phrase <- function(string, fret = NULL, info = NULL, key = "c",
          call. = FALSE)
   if(is.null(fret)){
     sfi <- .split_sfp_input(string)
-    string <- paste(sfi$string, collapse = " ")
-    fret <- paste(sfi$fret, collapse = " ")
-    info <- paste(sfi$info, collapse = " ")
+    string <- sfi$string
+    fret <- sfi$fret
+    info <- sfi$info
+  } else {
+    string <- .uncollapse(string)
+    n <- length(string)
+    fret <- .uncollapse(fret)
+    info <- .uncollapse(as_noteinfo(info))
+    if(length(fret) == 1) fret <- rep(fret, n)
+    if(length(fret) != n)
+      stop(paste("`fret` must have the same number of timesteps as `string`",
+                 "or a single value to repeat."), call. = FALSE)
+    if(length(info) == 1) info <- rep(info, n)
+    if(length(info) != n)
+      stop(paste("`info` must have the same number of timesteps as `string`",
+                 "or a single value to repeat."), call. = FALSE)
   }
-  .check_phrase_input(string, "string")
-  .check_phrase_input(fret, "fret")
-  string <- paste(gsub("_", "", .strsub(string)), collapse = " ")
-  fret <- (strsplit(fret, " ")[[1]] %>%
-             purrr::map_chr(.star_expand) %>%
-              paste0(collapse = " ") %>%
-             strsplit(" "))[[1]]
+  string <- .sfp_infer_strings(fret, string)
   tuning <- .map_tuning(tuning)
-  open_notes <- rev(strsplit(tuning, " ")[[1]])
+  open_notes <- rev(.split_chords(tuning))
   str_num <- rev(seq_along(open_notes))
-  notes <- purrr::map2(strsplit(string, " ")[[1]], fret, ~({
+  notes <- purrr::map2(string, fret, ~({
     string_tie <- grepl("~", .x)
     fret_tie <- grepl("~", .y)
     if(!identical(string_tie, fret_tie))
@@ -190,18 +202,18 @@ sf_phrase <- function(string, fret = NULL, info = NULL, key = "c",
         strsplit(x, "")[[1]]
       }
       }) %>%
-      unlist %>%
-      as.integer
+      unlist() %>%
+      as.integer()
     if(length(x) != length(y)) stop("String/fret mismatch.", call. = FALSE)
     x <- sapply(seq_along(x), function(i, x, y){
-      transpose(open_notes[x[i]], y[i], key, "tick")
+      transpose(open_notes[x[i]], y[i], "tick", key = key)
     }, x = x, y = y)
     if(any(string_tie)) x[string_tie] <- paste0(x[string_tie], "~")
     paste(x, collapse = "")
   })) %>%
-    unlist %>%
+    unlist() %>%
     paste(collapse = " ")
-  if(to_notes) return(notes)
+  if(to_notes) return(as_noteworthy(notes))
   phrase(notes, info, gsub("~", "", string), bar)
 }
 
@@ -220,6 +232,27 @@ sf_note <- function(...){
 #' @export
 #' @rdname sf_phrase
 sfn <- sf_note
+
+.sfp_infer_strings <- function(x, s){
+  size <- sapply(strsplit(.strsub(gsub("~", "", x)), "_"), length)
+  rests <- note_is_rest(x)
+  s_tie <- grepl("~", s)
+  if(any(s_tie)) s[s_tie] <- gsub("~", "", s[s_tie])
+  idx <- which(nchar(s) == 1 & size > 1)
+  if(length(idx)) s[idx] <- purrr::map2_chr(as.integer(s[idx]), size[idx], ~{
+    x <- paste(seq(.x, by = -1, length.out = .y), collapse = "")
+    if(grepl("[-0]", x)) stop("Invalid string number < 1.", call. = FALSE)
+    x
+  })
+  idx <- !rests & nchar(s) != 0
+  if(any(idx)){
+    if(any(nchar(s[idx]) != size[idx]))
+      stop("Number of strings and frets must match at each non-rest timestep.",
+           call. = FALSE)
+  }
+  if(any(s_tie)) s[s_tie] <- paste0(s[s_tie], "~")
+  s
+}
 
 .split_sfp_input <- function(x){
   x <- strsplit(x, " ")[[1]]
@@ -242,7 +275,7 @@ sfn <- sf_note
   x <- do.call(rbind, x) %>%
     as.data.frame(stringsAsFactors = FALSE) %>%
     stats::setNames(c("string", "fret", "info")) %>%
-    dplyr::as_tibble() %>%
+    tibble::as_tibble() %>%
     tidyr::fill(.data[["string"]], .data[["info"]]) %>%
     dplyr::mutate(
       string = .infer_strings(.data[["string"]], .data[["fret"]]),
@@ -266,7 +299,6 @@ sfn <- sf_note
   muted <- .muted_index(fret)
   f <- function(string, fret, n, muted){
     if(n == 1 & fret %in% c("r", "s")) return(fret)
-    if(string == n & -1 %in% muted & n > 2) return(paste0(string, "s"))
     string <- seq(as.integer(string), by = -1, length.out = n)
     if(!(-1 %in% muted)) string <- string[-muted]
     paste0(string, collapse = "")

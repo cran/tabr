@@ -1,8 +1,8 @@
 ---
-title: "Engraving"
+title: "Render scores"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Engraving}
+  %\VignetteIndexEntry{Render scores}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,15 +19,23 @@ knitr::opts_chunk$set(
 library(tabr)
 ```
 
-This section covers `lilypond` and `tab` for writing LilyPond files and engraving to sheet music with LilyPond, respectively. Examples of the various pieces of song metadata that can be passed to to these functions are provided.
+This section covers `lilypond` and `tab` for writing LilyPond files and engraving to sheet music with LilyPond, respectively. Examples of the various pieces of metadata that can be passed to to these functions are provided.
 
-The examples focus on `tab` because this function generates the tablature whereas `lilypond` only creates the LilyPond file that `tab` renders via LilyPond. `tab` is a wrapper around `lilypond`. The two functions have the same arguments. `tab` passes these along to `lilypond` internally, except for one. `tab` has `keep_ly = FALSE` by default, which removes the `.ly` file created by `lilypond` following rendering of the file to pdf or png. To keep the LilyPond file, set this to `TRUE`. See the function documentation for details.
+## Rendering
 
-By now you have seen many calls to `tab` in order to show full examples in early tutorial sections. With sufficient coverage of phrases, tracks and scores, and the progression through them, now it is time to go into detail on all the render time arguments that can be supplied that apply to the entire piece of tablature and any metadata or general song information associated with it.
+The `lilypond` function creates a LilyPond file (`.ly`). Various rendering functions wrap `lilypond` to combine the steps of creating an intermediary LilyPond file and rendering it to pdf or png. The most general render function is `tab`, which for naming consistency can also be called as `render_tab`. Other `render_*` functions exist including `render_score` and `render_midi`, which focus on rendering non-tablature, all-purpose sheet music and rendering only the corresponding MIDI file, respectively.
+
+The examples in this vignette focus on `tab`. You can set `keep_ly = TRUE` in render functions to retain the intermediary LilyPond file.
+
+By now you have seen many calls to `tab` throughout these vignettes in order to show full examples previously. With sufficient coverage of phrases, tracks and scores, and the progression through them, now it is time to go into more detail on the arguments that can be supplied as part of the rendering or engraving process that apply to the entire piece of sheet music.
 
 ## Score metadata
 
-These are the most critical components that can be supplied to `lilypond`. These are the three arguments immediately after the input `score` and output `file`. While they have default values, they will almost invariably need to be changed for just about any song. `key` specifies the key signature, e.g. `key ="dm"`. Key changes in the middle of a song are not supported, but you can always edit the LilyPond file by hand to make highly customized changes. `time` gives the time signature, defaulting to common time, or 4/4 time. `tempo` provides the song tempo, defaulting to `tempo = "2 = 60"`. Note that `key` takes the `tabr` consistent key signature notation whereas `time` and `tempo` take literal LilyPond strings. Look up options for these strings if you are not familiar with them in LilyPond.
+These are the most critical components that can be supplied to `lilypond`. `key` specifies the global key signature, e.g. `key ="dm"`. Key signatures set for individual track override the global key, but the global key is used for any track whose key is `NA`. Key changes in the middle of a song are not supported, but you can always edit the LilyPond file directly to make custom changes. 
+
+`time` gives the time signature, defaulting to common time, `"4/4"`. `tempo` provides the song tempo, defaulting to `tempo = "2 = 60"`, which is the LilyPond default. This can be read as 60 half note beats per minute.
+
+Note that `key` takes the `tabr` key signature notation, but `time` and `tempo` which are used mostly in a transcription context like this, take values that match LilyPond format.
 
 Throughout this tutorial section, the guitar and bass example from the section on tracks and scores is reused. The chord chart and chord sequence are retained to provide the most complete illustration of a rendered score. For completeness, here is what you have so far.
 
@@ -42,18 +50,18 @@ bass <- rp(p("c2e2*4 g1*2 f1*2 c2e2*3", "4*10 2", "32*4 4*4 32*3"), 2)
 
 t1 <- track(voice1, voice = 1)
 t2 <- track(voice2, voice = 2)
-t3 <- track(bass, tuning = "bass", music_staff = "bass_8")
+t3 <- track(bass, clef = "bass_8", tuning = "bass")
 
 chords <- chord_set(c(c = "x32o1o", g = "355433", f = "133211"))
 chord_seq <- rep(setNames(c(1, 2, 2, 1), names(chords)[c(1:3, 1)]), 3)
 chords
 chord_seq
 
-song <- trackbind(t1, t2, t3, tabstaff = c(1, 1, 2)) %>% score(chords, chord_seq)
+song <- trackbind(t1, t2, t3, id = c(1, 1, 2)) %>% score(chords, chord_seq)
 song
 ```
 
-This time, when rendering the song, use settings for the three arguments discussed above. Given what is written, it doesn't make sense to change them all. For example, this won't fit well as a waltz (time = "3/4"). But for illustration purposes, pretend the song is actually in the key of D minor (F major). This key has one flat, B, so this will force the B note in the G chord to be annotated as an accidental. Change the time to `2/2` just for the sake of changing it, which won't really be any different from `4/4` except you will see a line through the common time symbol. Finally, change the tempo to `4 = 120`, which is also equivalent to the default, but will show up in the output slightly differently as well.
+This time when rendering the song, use settings for the three arguments discussed above. Given what is written, it doesn't make sense to change them all. For example, this won't fit well as a waltz (`time = "3/4"`). But for illustration purposes, pretend the song is actually in the key of D minor (F major). This key has one flat, Bb, so this will affect the display of the B note in the G chord. Change the time to `2/2` just for the sake of changing it, which won't really be any different from `4/4` except you will see a line through the common time symbol. Finally, change the tempo to `4 = 120`, which is also equivalent to the default, but will show up in the output slightly differently as well.
 
 ```{r metadata, results="hide", eval=FALSE}
 lilypond(song, "ex32.ly", "dm", "2/2", "4 = 120")
@@ -62,11 +70,11 @@ tab(song, "ex32.pdf", "dm", "2/2", "4 = 120")
 
 <p><img src="https://github.com/leonawicz/tabr/blob/master/data-raw/vignette-pngs/ex32.png?raw=true" class="centerimg" width="100%"></p>
 
-Notice how the key change alone, which added room for a single flat symbol to be squeezed into the start of the treble and bass clef staves, was enough to push everything to the point of wrapping around onto a second entire line compared to the earlier tutorial section where it all fit on one line. This is because it was a really tight fit to in the previous examples and there was not enough room for LilyPond to continue fitting everything on one line with this slight widening created by the key change. LilyPond generates sheet music with a somewhat responsive layout engraver. It won't leave everything on line one jam packaged and push a single measure to the line two. This will return to fitting on one line in a moment when we revert the key change.
+Notice how the key change alone, which added room for a single flat symbol to be squeezed into the start of the treble and bass clef staves, was enough to a line wrap compared to the previous tutorial section where it all fit on one line. This is because it was a tight fit to in the previous examples and there was not enough room for LilyPond to continue fitting everything on one line with this slight widening created by the key change. LilyPond generates sheet music with a somewhat responsive layout engraver. It won't necessarily leave everything on one line and push only a single measure to line two.
 
-### Output file and path
+### Output file
 
-The output file specified with `file` ends in pdf in every example. However, you can switch to png output simply by specifying a file name with that extension. `file` can specify just the file named or the path to the file. The path may be relative or absolute. Optionally, the path to the output file can be passed separately to `path`, which otherwise defaults to `NULL`.
+The output file specified with `file` ends in pdf in every example. However, you can switch to png. Output is inferred from the file extension. `file` can be a relative or absolute path to the file.
 
 ## Song information
 
@@ -105,23 +113,88 @@ Also, `tabr` is a package aimed at creating guitar tablature. It is not concerne
 
 ### String names
 
-The `string_names` argument defaults to `NULL`. This means that standard tuning is never specified alongside the lines of a tab staff at the beginning of the tablature. However, any other tuning will be explicitly noted so the reader is aware of the alternate tuning of any applicable track. This can also be set to `TRUE` to force all tunings to be explicit including standard guitar tuning or `FALSE` to suppress them all (though it is unclear what value there is in the `FALSE` setting).
+The `string_names` is only relevant for tablature staves. argument defaults to `NULL`. This means that standard tuning is never specified alongside the lines of a tab staff at the beginning of the tablature. However, any other tuning will be explicitly noted so the reader is aware of the alternate tuning of any applicable track. This can also be set to `TRUE` to force all tunings to be explicit including standard guitar tuning or `FALSE` to suppress them all (though it is unclear what value there is in the `FALSE` setting).
 
-### Paper settings
+### Paper and color settings
 
 There is some nominal level of control over the paper layout via `paper`. Like `header`, this is a named list. The defaults are fine so you probably do not need to alter most of these values. There are six options, all numeric except for `page_numbers`, which is logical.
 
-*    `textheight`
-*    `linewidth`
-*    `indent`
-*    `first_page_number`
-*    `page_numbers`
-*    `fontsize`
+* `textheight`
+* `linewidth`
+* `indent`
+* `first_page_number`
+* `page_numbers`
+* `fontsize`
 
 If you pass any values for some of these in a named list to `paper`, any not passed will retain their built in defaults. You do not have to supply them all when using `paper`.
 
+There are also global color settings. You can pass a named list to `colors` with any of the following. Values are hex colors or R color names.
+
+* `color`
+* `background`
+* `staff_lines`
+* `time`
+* `clef`
+* `beam`
+* `head`
+* `stem`
+* `accidental`
+
 For more detail on these settings and others further above, see the help documentation, `?lilypond`.
 
+## PNG output
+
+Here are examples that make use of png-specific options and function behavior. First, when rendering to png instead of pdf, automatic cropping of the image is attempted. This removes the full page appearance for smaller snippets of sheet music. There are some limitations to this. For example, inclusion of header elements can disrupt this behavior.
+
+```{r png1, eval=FALSE}
+x <- pitch_seq("e,", 24, key ="c") %>% as_music(8) %>% p() %>% track() %>% score()
+
+ppr <- list(linewidth = 60, page_numbers = FALSE)
+hdr <- list(title = "Notes in C on guitar", subtitle = "Standard tuning")
+tab(x, "ex_png1.png", tempo = NULL, midi = FALSE, header = hdr, paper = ppr)
+```
+
+<p><img src="https://github.com/leonawicz/tabr/blob/master/data-raw/vignette-pngs/ex_png1.png?raw=true" class="centerimg" width="35%"></p>
+
+Above, the height is automatically cropped because `file` type is a png. Providing `textheight` to `paper` overrides this behavior. The width would have also been cropped on its own. However, because of the inclusion of `header` arguments, this fails and explicit `linewidth` is needed. Similarly, if elements that describe footer content (still part of the LilyPond `header` block) that appear at the bottom of the page such as `tagline` or `copyright` were included, automatic height cropping would have also failed. In general, automatic cropping is the default for png output, but `header` disrupts this, requiring manual overrides to width and height.
+
+In the example below, remove the header content. You can make a transparent background png, though you won't be able to see the difference here. Instead, create a dark mode example and increase the resolution.
+
+Since this is a single voice, single track, you do not need to explicitly call each function in the transcription pipeline. Use one of the convenient `render_music_*` functions to abstract this process, rendering sheet music directly from a `music` object. `render_music_guitar` has good default arguments for this example.
+
+```{r png2, eval=FALSE}
+colors <- list(color = "#e4e4e4", background = "gray10", head = "tomato", tabhead = "tomato")
+
+x <- as_music(pitch_seq("e,", 24, key ="c"), 8) %>% 
+  render_music_guitar("ex_png2.png", colors = colors, res = 300)
+```
+
+<p><img src="https://github.com/leonawicz/tabr/blob/master/data-raw/vignette-pngs/ex_png2.png?raw=true" class="centerimg" width="100%"></p>
+
+## The LilyPond file
+
+Finally, familiarize yourself with the LilyPond file itself. You may output a file and want to make additional edits to it directly. The example below also demonstrates some differences between `simplify = TRUE` and `simplify = FALSE`. This is a simple piece of music so not all possible syntax simplifications are shown here. 
+
+`phrase` objects have more robust structure that has advantages for performing object manipulations in R, but this is a more verbose version of LilyPond syntax. By default, `lilypond` as well as associated `render_*` functions will simplify this to a more efficient syntax so that it is less cumbersome to read and work with LilyPond files directly.
+
+### Original syntax
+
+There are other simplifications but the most notable benefits are the removal of all the `<>` around single notes and not repeating consecutive durations if they are unchanged from previous timesteps.
+
+```{r ly1}
+lilypond(song, "song.ly", simplify = FALSE)
+cat(readLines("song.ly"), sep = "\n")
+```
+
+### Simplified syntax
+
+Here you can see the changes to the notation. Since the music is so short in this example, most of the file remains the same.
+
+```{r ly2}
+lilypond(song, "song.ly")
+cat(readLines("song.ly"), sep = "\n")
+```
+
 ```{r cleanup, echo=FALSE}
-unlink("*.mid")
+unlink(c("*.ly", "*.mid"))
 ```

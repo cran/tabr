@@ -7,7 +7,8 @@
 \alias{chord_semitones}
 \alias{freq_pitch}
 \alias{freq_semitones}
-\title{Pitch-frequency conversion}
+\alias{semitone_pitch}
+\title{Pitch conversions}
 \usage{
 pitch_freq(notes, a4 = 440)
 
@@ -17,9 +18,22 @@ chord_freq(notes, a4 = 440)
 
 chord_semitones(notes)
 
-freq_pitch(freq, a4 = 440, collapse = FALSE, ...)
+freq_pitch(
+  freq,
+  octaves = c("tick", "integer"),
+  accidentals = c("flat", "sharp"),
+  collapse = FALSE,
+  a4 = 440
+)
 
 freq_semitones(freq, a4 = 440)
+
+semitone_pitch(
+  semitones,
+  octaves = c("tick", "integer"),
+  accidentals = c("flat", "sharp"),
+  collapse = FALSE
+)
 }
 \arguments{
 \item{notes}{character, noteworthy string, space-delimited or vector of
@@ -29,16 +43,24 @@ individual entries. See details.}
 
 \item{freq}{numeric vector, frequencies in Hz.}
 
+\item{octaves}{\code{NULL} or character, \code{"tick"} or \code{"integer"}
+octave numbering in result.}
+
+\item{accidentals}{\code{NULL} or character, represent accidentals,
+\code{"flat"} or \code{"sharp"}.}
+
 \item{collapse}{logical, collapse result into a single string.}
 
-\item{...}{other arguments passed to \code{tranpose}, specifically
+\item{semitones}{integer values of pitches.}
+
+\item{...}{other arguments passed to \code{transpose}, specifically
 \code{key} and \code{style}.}
 }
 \value{
 numeric vector
 }
 \description{
-Convert between pitch and frequency.
+Convert between pitch and other quantities.
 }
 \details{
 Frequencies are in Hertz. Values are based on the 12-tone equal-tempered
@@ -55,7 +77,16 @@ x <- "a e4 a4 e5 a5"
 y <- pitch_freq(x)
 y
 
+freq_semitones(y)
 freq_pitch(y)
 
-identical(as_noteworthy(x), freq_pitch(y, collapse = TRUE))
+identical(as_noteworthy(x), freq_pitch(y, "integer", collapse = TRUE))
+
+s <- pitch_semitones(x)
+s
+semitone_pitch(s)
+
+x <- "a, a,c#e"
+chord_semitones(x)
+chord_freq(x)
 }

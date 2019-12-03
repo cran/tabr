@@ -111,8 +111,8 @@ Before introducing the chord constructors, here is a brief mention and example o
 ```{r chords8}
 dyad("a", 3)
 x <- c("minor third", "m3", "augmented second", "A2")
-sapply(x, function(x) dyad("a", x))
-sapply(x, function(x) dyad("c'", x, reverse = TRUE))
+dyad("a", x)
+dyad("c'", x, reverse = TRUE)
 ```
 
 ## Predefined chord constructors
@@ -175,15 +175,15 @@ lp_chord_id("a a a", "m M m7_5")
 lp_chord_mod("a a a", "m M m7_5")
 ```
 
-`chord_is_known` checks against `guitarChords` to see if the explicit chord, as given by its component pitches, exists in the dataset. Notice below that `a` in the string of notes is a note, not a major `A` chord, and hence returns `FALSE`. In the `chord_name_*` functions, the same `a` is now interpreted as a major chord because these functions operate on chord name inputs.
+`gc_is_known` checks against `guitarChords` to see if the explicit chord, as given by its component pitches, exists in the dataset. Notice below that `a` in the string of notes is a note, not a major `A` chord, and hence returns `FALSE`. In the `gc_name_*` functions, the same `a` is now interpreted as a major chord because these functions operate on chord name inputs.
 
 ```{r gc_helpers2}
-chord_is_known("a b_,fb_d'f'")
+gc_is_known("a b_,fb_d'f'")
 
 x <- "a aM b_,m7#5"
-chord_name_split(x)
-chord_name_root(x)
-chord_name_mod(x)
+gc_name_split(x)
+gc_name_root(x)
+gc_name_mod(x)
 ```
 
 ## Guitar chord construction
@@ -210,18 +210,21 @@ The same properties of `gc_info` apply to wrapper functions around it, namely, `
 
 Keep in mind that these functions are under active development and the approaches they take may change prior to the next CRAN release of `tabr`. Currently, the ways you can add precision to your chord mapping include passing the following optional arguments:
 
+* `root_octave`: the octave number for the root note.
 * `root_fret`: the fret for the root note.
 * `min_fret`: the lowest fret position for a chord.
 * `bass_string`: the lowest unmuted string for a chord.
 * `open`: open chords, closed/movable chords, or both (default).
 * `key`: key signature, to enforce sharps or flats when present.
 
+In this example, possible matches from `guitarChord` are filtered to any whose root fret is in `0:2`.
+
 ```{r gc_notes}
-x <- gc_notes("a,7 b,m", 0:2) # filter/restriction: root fret must be in 0:2
+x <- gc_notes("a,7 b,m", root_fret = 0:2, ignore_octave = FALSE)
 summary(x)
 ```
 
-Notice that the octave information helps further restrict the chord set as well. This can be turned off with `ignore_octave = TRUE`.
+Notice that the octave information helps further restrict the chord set with `ignore_octave = FALSE`.
 
 ### Fretboard diagrams
 
@@ -230,7 +233,5 @@ When creating tablature and sheet music with LilyPond, you may wish to include a
 This process and the structure of the data objects involved may change soon (I have not decided for certain yet). But for the time being, this is still the process. Therefore, the new function `gc_fretboard` performs the same manipulation using chords from `guitarChords`.
 
 ```{r gc_fretboard}
-gc_fretboard("a,m c d f,", NA, 0:1)
+gc_fretboard("a,m c d f,", min_fret = 0:1)
 ```
-
-This summarizes the current state of guitar chord name-note mapping in `tabr`. This is an area still under active development and subject to change.

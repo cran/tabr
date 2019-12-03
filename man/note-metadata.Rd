@@ -6,25 +6,21 @@
 \alias{n_notes}
 \alias{n_chords}
 \alias{n_octaves}
-\alias{tally_notes}
-\alias{tally_pitches}
-\alias{tally_octaves}
-\alias{distinct_notes}
-\alias{distinct_pitches}
-\alias{distinct_octaves}
-\alias{pitch_range}
-\alias{semitone_range}
-\alias{semitone_span}
-\alias{octave_range}
-\alias{octave_span}
+\alias{chord_size}
 \alias{octave_type}
 \alias{accidental_type}
 \alias{time_format}
 \alias{is_space_time}
 \alias{is_vector_time}
+\alias{note_is_tick}
+\alias{note_is_integer}
+\alias{note_has_tick}
+\alias{note_has_integer}
+\alias{note_is_rest}
+\alias{note_has_rest}
 \title{Noteworthy string metadata}
 \usage{
-n_steps(notes)
+n_steps(x)
 
 n_notes(notes)
 
@@ -32,91 +28,106 @@ n_chords(notes)
 
 n_octaves(notes)
 
-tally_notes(notes)
-
-tally_pitches(notes)
-
-tally_octaves(notes)
-
-distinct_notes(notes)
-
-distinct_pitches(notes)
-
-distinct_octaves(notes)
-
-pitch_range(notes)
-
-semitone_range(notes)
-
-semitone_span(notes)
-
-octave_range(notes)
-
-octave_span(notes)
+chord_size(notes)
 
 octave_type(notes)
 
-accidental_type(notes)
+accidental_type(x)
 
-time_format(notes)
+time_format(x)
 
-is_space_time(notes)
+is_space_time(x)
 
-is_vector_time(notes)
+is_vector_time(x)
+
+note_is_tick(notes)
+
+note_is_integer(notes)
+
+note_has_tick(notes)
+
+note_has_integer(notes)
+
+note_is_rest(notes)
+
+note_has_rest(notes)
 }
 \arguments{
+\item{x}{for generic functions: notes, info or music string.}
+
 \item{notes}{character, a noteworthy string, space-delimited or vector of
 individual entries.}
 }
 \value{
-integer or character
+varies by function
 }
 \description{
-Inspect metadata for noteworthy strings.
+Inspect basic metadata for noteworthy strings.
 }
 \details{
-Returned object depends on the nature of the function. It can be integers,
-logical, character. Results can be a vector of equal length of a single
-value summary.
-\code{distinct_notes} and \code{distinct_pitches} filter a noteworthy string
-to its unique elements, respectively. These functions return another
-noteworthy string.
+These functions inspect the basic metadata of noteworthy strings.
+For functions that perform basic checks on strings, see
+\code{\link{note-checks}}.
 
 The \code{n_*} functions give summary totals of the number of timesteps,
 number of individual note (non-chord) timesteps, number of chord time
 steps, and the number of distinct octaves present across timesteps.
-Use the \code{tally_*} and \code{distinct_*} functions specifically for
-summaries of unique elements.
-
-\code{*_span} functions are just the size of a range, e.g.,
-\code{semitone_range} and \code{semitone_span}.
 
 Functions pertaining to type or format of a noteworthy string provide
 information on how a particular string is defined, e.g. \code{time_format}.
+Note that the result pertains to true \code{noteworthy}-class objects. If
+inspecting a standard character string, the result pertains to
+post-conversion to the \code{noteworthy} class and does not necessarily
+reflect what is found in \code{notes} verbatim. See examples.
 }
+\section{A note on generic functions}{
+
+\code{n_steps} and the three time format functions are generic since they
+apply clearly to and are useful for not only noteworthy strings, but also
+note info, music, and lyrics objects.
+If \code{x} is still a simple character string, these functions attempt to
+guess if it is noteworthy, note info, or music. Lyrics content is arbitrary
+so is never considered for a simple character string. Best practice is to
+set the class before using these functions anyway.
+
+There are many package functions that operate on noteworthy strings that
+could in concept also work on music objects, but the expectation is that
+sound and time/info are disentangled for analysis.
+The music class is convenient and relatively efficient data entry, e.g., for
+transcription purposes, but it is not sensible to perform data analysis with
+quantities like pitch and time tightly bound together in a single string.
+This would only lead to repetitive deconstructions and reconstructions of
+music class objects.
+
+The music class is intended to be a transient class such as during data
+import, data entry, or data export.
+Most functions that operate on noteworthy strings or note info
+strings strictly apply to one or the other. Generic functions are reserved
+for only the most fundamental and generally applicable metadata retrieval
+and format coercion.
+}
+
 \examples{
 x <- "e_2 a_, c#f#a#"
 n_steps(x)
 n_notes(x)
 n_chords(x)
 n_octaves(x)
+chord_size(x)
 
-tally_notes(x)
-tally_pitches(x)
-tally_octaves(x)
-distinct_notes(x)
-distinct_pitches(x)
-distinct_octaves(x)
-
-pitch_range(x)
-semitone_range(x)
-semitone_span(x)
-octave_range(x)
-octave_span(x)
-
+# Type is mixed in \code{x} but is inferred under default conversion rules.
+# These check \code{x} once validated and coerced to 'noteworthy' class.
 octave_type(x)
 accidental_type(x)
+# The default is tick octaves and flats
+as_noteworthy(x)
+
 time_format(x)
 is_space_time(x)
 is_vector_time(x)
+}
+\seealso{
+\code{\link{tabr-methods}}, \code{\link{note-checks}},
+\code{\link{note-summaries}}, \code{\link{note-coerce}},
+\code{\link{valid-notes}}
 }

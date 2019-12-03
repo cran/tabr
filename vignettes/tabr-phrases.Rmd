@@ -19,25 +19,31 @@ knitr::opts_chunk$set(
 library(tabr)
 ```
 
+## Overview
+
+This section goes into deeper detail on building musical phrases out of individual notes using the syntax available for phrase construction. It also describes how to add note information to the notes in a phrase.
+
+As mentioned in the last section, "phrase" in `tabr` does not require a strict definition. It is recommended to keep phrases short enough that they do not too much cognitive load. They should also represent meaningful or convenient segments of music, for example whole measures, a particular rhythm section, or an identifiable section of a longer solo. 
+
+Writing music notation in R code is not intended to replace LilyPond markup. You can always write LilyPond markup directly and this will give you more options and greater control. The motivation for `tabr` is primarily music data analysis from a notation perspective, but to the degree that various types of notation are supported, it also allows you to transcribe your data to sheet music or tablature. Working from a programming language like R is also very different from writing static markup files. While the API is far more limited than writing LilyPond markup directly, generating music notation programmatically and creating sheet music dynamically is an entirely different use case from writing markup for a specific song.
+
+The opening section showed a basic example using a single, and very simple, phrase. This section will cover phrases that include notes and rests of different duration, slides, hammer ons and pull offs, simple string bends, and various other elements. Phrases will become longer and more visually complex. There is no way around this fact. But with proper care they can be kept manageable and interpretable, depending on your comfort level with music theory, notation and R programming.
+
+Before diving in, take a look at the tables below for an overview of some common syntax and operators that are used throughout this section.
+
 ```{r syntax, echo=FALSE}
 x <- tabrSyntax
 x$syntax <- gsub("\\-", "\\\\-", gsub("\\*", "\\\\*", x$syntax))
 x$example <- gsub("\\*", "\\\\*", x$example)
-x %>% knitr::kable("html", escape = TRUE, align = "c", caption = "tabr::tabrSyntax") %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"), position = "float_right", full_width = FALSE)
+x %>% knitr::kable(caption = "tabr::tabrSyntax") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"), position = "center", full_width = FALSE)
 ```
 
-## Overview
+There are additional single-note articulations that can be specified, such as accented or staccato notes. This can be provided using the name in square brackets, e.g., `[accent]` or `[staccato]`. In special cases an abbreviated syntax is available, e.g., `-^` or `-.`. There are many options. Some of the most common ones are shown. See the `articulations` dataset.
 
-This section goes into deeper detail on building musical phrases out of individual notes using the various component parts available for phrase construction. It also describes how to add information, note metadata, to the notes in a phrase so that the phrase is defined unambiguously.
-
-As mentioned in the last section, phrases in `tabr` do not require a strict definition. It is recommended to keep phrases short enough that they do not cause you difficulty dissecting them again visually. They should also represent meaningful or at least convenient segments of music, for example whole measures, a particular rhythm section, or an identifiable section of a longer solo. 
-
-Writing out music in R code is not intended to be any more readable than writing out LilyPond markup. The driving motivation here is a preference for avoiding writing LilyPond markup directly, aimed at people who specifically want to do this from R. Care must still be taken to not write phrases that are so long and complex that even you can not adequately parse their information by eye afterward.
-
-The opening section showed a basic example using a single, and very simple, phrase. This section will cover phrases that include notes and rests of different duration, slides, hammer ons and pull offs, simple string bends, and various other elements. Phrases will become longer and more visually complex. There is no way around this fact. But with proper care they can be kept manageable and interpretable, depending on your comfort level with music theory, notation and R programming.
-
-Before diving in, take a look at the table to the right for an overview of some syntax and operators that are used throughout this section.
+```{r syntax2}
+head(articulations)
+```
 
 ## Notes
 
@@ -51,11 +57,13 @@ Sharps are represented by appending `#` and flats with `_`, for example `a#` or 
 
 A string of notes is separated in time by spaces. Simultaneous notes are not. For example, `"a b c"` represents a sequence of notes in time whereas `"ceg"` represents simultaneously played notes of a C major triad chord. For now the focus will remain on individual notes. The end of this section includes a tiny chord example. Chords are discussed in more detail in later sections.
 
+Functions in `tabr` also handle vector-delimited time. It is not as quick to type out the example below as a vector of notes, but if you already have a vector you do not have to collapse it. Package functions will accept either timestep format.
+
 ### Unambiguous pitch
 
 While it is allowable to specify note sequences such as `"a b c"`, this assumes octave number 3. But this may not be what you intend and there is no reason to assume anything. In the example here, what is likely intended might be `"a2 b2 c3"`. 
 
-This is the recommended way to specify notes and requires this level of familiarity with describing musical pitch. LilyPond markup uses single or multiple consecutive commas for lower octaves and single quote marks for higher octaves. This notation is permitted by `tabr` as well. In fact, if you specify integer suffixes for octave numbering, `phrase` will reinterpret these for you. The following are equivalent, as shown when printing the LilyPond syntax generated by `phrase`.
+This is the recommended way to specify notes. It combines the note and the octave number to specify the pitch. LilyPond markup uses single or multiple consecutive commas for lower octaves and single quote marks for higher octaves. This notation is permitted by `tabr` as well. In fact, if you specify integer suffixes for octave numbering, `phrase` will reinterpret these for you. The following are equivalent, as shown when printing the LilyPond syntax generated by `phrase`.
 
 The second example here also shows the convenient multiplicative expansion operator `*` that can be used inside character strings passed to the three main `phrase` arguments. Use this wherever convenient, though this tutorial section will continue to write things out explicitly for increased clarity. Other operators like this one to help shorten repetitive code are introduced later.
 
@@ -215,8 +223,8 @@ Bends are specified with a `^`. Bend engraving does not look very good at the mo
 In the example below, a half step bend-release-bend is attempted over the three B notes shown at the end of the first phrase. Because the string is only plucked one time, the first two B notes are tied through to the third. Since a tied note is a note, this is done in `notes`. The two bends are indicated with `^` on the first and third notes via `info`. A similar approach is taken with the second phrase, although with full step bends from G to A. In both cases, the initial bend is not a pre-bend, but should be very quick. None of these fine details can be provided with the current version of `tabr`.
 
 ```{r p10, results="hide", eval=FALSE}
-notes <- pc("r a2 c3 f3 d3 a3 f3 b3~ b3~ b3", "r a3 c4 d4 a3 f4 d4 g4~ g4~ g4")
-info <- pn("4 8 8 8 8 8 8 16^ 16 2..^", 2)
+notes <- pc("r a, c f d a f b~ b~ b", "r a c4 d4 a f4 d4 g4~ g4~ g4")
+info <- pn("4 8*6 16^ 16 2..^", 2)
 strings <- pc("x 5 5 4 4 3 4 3 3 3", "x 4 3 3 4 2 3 2 2 2")
 phrase(notes, info, strings) %>% track %>% score %>% tab("ex10.pdf")
 ```
@@ -230,11 +238,13 @@ As you can see, the implementation is limited in `tabr`. It is also relatively d
 Chords are covered in detail in later sections. For now, a brief example is given to more fully demonstrate the concept of space-delimited time and the use of simultaneous vs. sequential notes in `tabr`. The example below shows how to include some open C major chords inside `notes`. It is simply a matter of removing spaces. The tightly bound notes are simultaneous in time. `info` applies to the entire chord because it describes attributes of notes played at a given moment. There are obvious limitations to this though fortunately not hugely detrimental. `string` numbers are tightly bound for chords as well.
 
 ```{r p11, results="hide", eval=FALSE}
-p1 <- phrase("c cegc'e' c3 c3e3g3c4e4", "4*4", "5 54321 5 5s")
+p1 <- phrase("c cegc'e' c3 c3e3g3c4e4", 4, 5)
 track(p1) %>% score %>% tab("ex11.pdf")
 ```
 
-It can be seen above that just like individual notes, chords can be specified using any combination of tick or integer octave numbering. They are equivalent. Tick style may be more readable for some. Leaving out the integer 3 can help for many chords. Note the shorthand string numbering, `5s`, used for the second C chord. This is useful for bar chords. `[n]s` runs from `n` to 1.
+It can be seen above that just like individual notes, chords can be specified using any combination of tick or integer octave numbering. They are equivalent. Tick style may be more readable for some. Octave 3 is the implicit default and can be left out. Note the shorthand string numbering, Note info and string numbers can be recycled across the timesteps in `notes` as long as their length is one.
+
+When a single string number is given for a timestep, but there is more than one note at that timestep, it is assumed to be the starting string number and addition consecutive string numbers are inferred. Multiple explicit string numbers per timestep are only required when they are not completely consecutive. In general, the number of implicit or explicit strings per timestep must match the number of notes. String numbers are ignored for rests.
 
 <p><img src="https://github.com/leonawicz/tabr/blob/master/data-raw/vignette-pngs/ex11.png?raw=true" class="centerimg" width="37%"></p>
 

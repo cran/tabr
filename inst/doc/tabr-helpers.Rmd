@@ -25,8 +25,8 @@ This section covers helper functions related to phrases. These functions assist 
 
 Briefly, there are some convenient aliases for `tabr` functions that are used often. These aliases have short function names to help keep the music notation R syntax a more concise if desired. These include:
 
-*    `p`, an alias for `phrase`.
-*    `tp`, an alias for `transpose`.
+* `p`, an alias for `phrase`.
+* `tp`, an alias for `transpose`.
 
 The most common conflicts to watch out for are using `tabr` with `shiny` where `p` is a function and if you use `purrr` to help wrangle some of your more complex tablature, it has its own `transpose` function. Pay attention to package load order and/or use explicit names spaces if working with these packages loaded.
 The recommended approach is to stick with `phrase` in apps where users will not see your code anyway and stick with `tp` for transposition in general.
@@ -64,7 +64,7 @@ rest(c(8, 1, "4."), c(3, 10, 1))
 
 Tied notes were introduced momentarily in the previous section on phrases. The example given showed that ties are denoted by appending the pitch letter of the note with `~` and this will create a tie in the output from this note to the next one.
 
-This can be frustrating to type and to read when done for six-string chords for example. `tie` can make this more bearable. Chords receive further discussion in subsequent sections. They were only shown very briefly at the end of the last section so that space-delimited time and simultaneous notes could be demonstrated clearly. For now, this is enough to appreciate this example of `tie`.
+This can be frustrating to type and to read when done for six-string chords for example. `tie` can make this more bearable. Chords receive further discussion in subsequent sections. They were shown briefly at the end of the last section so that space-delimited time and simultaneous notes could be demonstrated clearly. For now, this is enough to demonstrate `tie`.
 
 ```{r tie}
 em <- "e,a,dgbe'"
@@ -95,7 +95,7 @@ Note that `transpose` drops the unnecessary `3`s for the third octave, the centr
 ```{r tp1}
 notes1 <- "c3 b2 c3 d3 e3 e3 d3 c3 b2 c3 c3 c4"
 notes2 <- "c4 b c4 d4 e4 e4 d4 c4 b c4 c4 c5"
-transpose(notes1, 12) == notes2
+all(transpose(notes1, 12) == as_noteworthy(notes2))
 ```
 
 Transposing down is done with negative integers. The default (`n = 0`) returns the input, `x`, with no transposition. The alias `tp` can be used to limit typing. Examples are shown below.
@@ -115,9 +115,9 @@ Since `notes` can be arbitrarily short, even a single note, there is no reason f
 
 ```{r tp3}
 tp("a3 b4 c5", 2, key = "f")
-tp("a3 b4 c5", 2, key = "g", style = "tick")
-tp("a b' c''", 2, key = "flat")
-tp("a, b c'", 2, key = "sharp", style = "integer")
+tp("a3 b4 c5", 2, octaves = "tick", key = "g")
+tp("a b' c''", 2, accidentals = "flat")
+tp("a, b c'", 2, octaves = "integer", accidentals = "sharp")
 ```
 
 The key of F has one flat (B flat) and the key of G has one sharp (F sharp). Transposing the above notes up by a whole step (two semitones or half steps) results in a new note sequence that includes either a D flat or C sharp for the second note. This pitch does not occur (except as an accidental) in either of those keys. 
@@ -137,19 +137,21 @@ tuplet(pn(x, 2), 8, a = 6, b = 4) # 6 notes per 4 beats
 tuplet(pn(x, 4), 8) # multiple tuplets, one call
 ```
 
-Like `phrase`, these functions accept a `string` number argument, which is critical as usual (try engraving the final phrase below without explicit string numbers and see the mess you get). This example includes some rests.
+Like `phrase`, these functions accept a `string` number argument, which is critical as usual for guitar tablature (try engraving the final phrase below without explicit string numbers and see the mess you get). This example includes some rests.
 
 ```{r tuplet2, results="hide", eval=FALSE}
-p1 <- pc(triplet("c4 r e4", 8, "4 3 3"), 
-           tuplet("f4 g4 a4 b4 c5 b4", 8, "3 2 2 1 1 1", 6, 4), 
-           tuplet("a4 r f4 g4 r e4 f4 e4 d4 e4 d4 c4", 16, "2 2 3 2 3*7 4"),
-           tuplet("b a g f e", 16, "4 4 5*3", 5, 4))
+p1 <- c(
+  triplet("c4 r e4", 8, "4 3 3"), 
+  tuplet("f4 g4 a4 b4 c5 b4", 8, "3 2 2 1 1 1", 6, 4), 
+  tuplet("a4 r f4 g4 r e4 f4 e4 d4 e4 d4 c4", 16, "2 2 3 2 3*7 4"),
+  tuplet("b a g f e", 16, "4 4 5*3", 5, 4)
+)
 track(pc(p1, p("d c", "8 4.", "6 6"))) %>% score %>% tab("ex12.pdf")
 ```
 
 <p><img src="https://github.com/leonawicz/tabr/blob/master/data-raw/vignette-pngs/ex12.png?raw=true" class="centerimg" width="100%"></p>
 
-This concludes the section on helper functions associated with phrases and note sequences. The next section goes into deeper detail on chord specification and the various use of chords in `tabr`.
+By itself `triplet` is of limited utility. Notice that it does not allow any additional note info to be included. If you have more note info, `phrase` now supports triplets directly (not general tuplets though). It is recommended to provide note info to `phrase` that uses the `t`-prefix triplet notation, e.g., `"t8"`. Notes and chords with this triplet timing will be parsed into LilyPond triplet syntax like above, but also retaining other note info.
 
 ```{r cleanup, echo=FALSE}
 unlink("*.mid")

@@ -1,4 +1,4 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 options(crayon.enabled = TRUE)
 sgr_wrap <- function(x, options){
   paste0("<pre class=\"r-output\"><code>", fansi::sgr_to_html(x = htmltools::htmlEscape(x)), "</code></pre>")
@@ -9,30 +9,30 @@ knitr::opts_chunk$set(
 )
 library(tabr)
 
-## ----noteworthy----------------------------------------------------------
-x <- "a2 r b2*2 ce_g cd#g"
+## ----noteworthy---------------------------------------------------------------
+x <- "a, r b,*2 ce_g cd#g"
 noteworthy(x)
 noteworthy("h")
 
-## ----as_noteworthy-------------------------------------------------------
+## ----as_noteworthy------------------------------------------------------------
 x <- "a# b_*2 c, d'' e3*2 g_4 c2e_2g2*2"
 x <- as_noteworthy(x)
 x
 
 summary(x)
 
-## ----noteworthy2---------------------------------------------------------
+## ----noteworthy2--------------------------------------------------------------
 x <- as_noteworthy(x, format = "vector", octaves = "tick", accidentals = "flat")
 x
 
 summary(x)
 
-## ----noteworthy3---------------------------------------------------------
+## ----noteworthy3--------------------------------------------------------------
 x <- "a2 r b2*2 ce_g cd#g HELLO_WORLD"
 is_note(x)
 is_chord(x)
 
-## ----notable-------------------------------------------------------------
+## ----notable------------------------------------------------------------------
 p1 <- phrase("b, c d ec'g'~ ec'g'", "4( 4)- 2*3", "5*3 432*2")
 p1
 

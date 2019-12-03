@@ -4,112 +4,133 @@
 #' metadata, and optionally explicit strings fretted. The latter can be used to
 #' ensure proper tablature layout.
 #'
-#' Meeting all of the requirements for a string of notes to be valid
-#' \code{tabr} syntax is referred to as \emph{noteworthy}. Noteworthy strings
-#' are referred to throughout the documentation.
-#' Such requirements are outlined below.
+#' A phrase object combines a valid string of notes with a corresponding valid
+#' string of note info. The only required note info is time, but other
+#' information can be included as well. You do not need to input an existing
+#' \code{noteworthy} class object and \code{noteinfo} class object, but both
+#' inputs must be valid and thus coercible to these classes. This is similar to
+#' how the \code{music} class works. The difference with phrase objects is that
+#' they are used to create LilyPond syntax analogous to what a music object
+#' contains.
 #'
-#' Noteworthy strings use space-delimited time. This means that notes and
-#' chords separated in time are separated in the \code{notes} string by spaces.
-#' This is by far the most common usage. However, many functions in
-#' \code{tabr}, including \code{phrase},
-#' allow a \code{notes} or similar first function argument to be provided in
-#' vector form where each vector element is a single note or chord (single
-#' point in time).
-#' Internally, functions like \code{phrase} will manipulate these forms back
-#' and forth as needed. Having both input options provides useful flexibility
-#' for music programming in \code{tabr} in general.
-#' The pipe operator can also be leveraged to chain several functions together.
+#' Note that if you convert a music object to a phrase object, you are changing
+#' contexts. The phrase object is the simplest LilyPond-format music structure.
+#' Coercion with \code{phrase} strips all attributes of a music object and
+#' retains only notes, note info and string numbers.
 #'
-#' Sharps and flats are indicated by appending \code{#} and \code{_},
-#' respectively, e.g. \code{f#} or \code{g_}.
-#'
-#' Specifying notes that are one or multiple octaves below or above the third
-#' octave can be done by appending one or multiple commas or single quote
-#' tick marks, respectively, e.g. \code{c,} or \code{c''}.
-#' But this is not necessary. Instead, you can use octave numbering. This may
-#' be easier to read, generally more familiar,
-#' potentially requires less typing, can still be omitted completely
-#' for the third octave (no need to type c3, d3, ...), and is automatically
-#' converted for you by \code{phrase} to the tick mark format interpreted by
-#' LilyPond.
-#' That said, using the raised and lowered tick mark approach can be
-#' surprisingly easier to read for chords, which have no spaces between notes,
-#' especially six-string chords,
-#' given that the tick marks help break up the notes in the chord visually much
-#' more so than integers do. See examples.
-#'
+#' See the help documentation on \code{noteworthy}, \code{noteinfo}, and
+#' \code{music} classes for an understanding of the input data structures.
 #' The function \code{p} is a convenient shorthand wrapper for \code{phrase}.
 #'
-#' Tied notes indicated by \code{~} are part of the \code{note} notation and
-#' not part of the \code{info} notation, e.g. \code{c''~}.
-#'
-#' Notes can comprise chords. These are bound tightly rather than
-#' space-delimited, as they are not separated in time.
-#' For example, a C chord could be given as \code{ceg} and in the case of tied
-#' notes would be \code{c~e~g~}.
-#'
-#' Other information about a note is indicated with the \code{info} string.
-#' The most pertinent information, minimally required, is the note duration.
-#' A string of space-delimited \code{notes} will always be accompanied by a
-#' space-delimited string of an equal number of integer durations.
-#' Durations are powers of 2: 1, 2, 4, 8, 16, 32, 64. They represent the
-#' fraction of a measure, e.g., 2 means 1/2 of a measure and 8 refers to an
-#' eighth note.
-#' Dotted notes are indicated by adding \code{.} immediately after the integer,
-#' e.g., \code{2.} or \code{2..}.
-#' Any other note metadata is appended to these durations. See examples.
-#'
-#' Opening and closing slurs (or hammer ons and pull offs) are indicated with
-#' opening and closing parentheses, slides with \code{-}, and simple bends with
-#' \code{^}.
-#' Text annotations aligned vertically with a note in time on the staff is done
-#' by appending the text to the note info entry itself.
-#' See \code{\link{notate}}.
-#' For more details and example, see the package vignettes.
-#'
-#' @param notes character, notes \code{a} through \code{g}, comprising a
-#' noteworthy string. \code{notes}. See details.
-#' @param info character, metadata pertaining to the \code{notes }. See details.
-#' @param string character, optional string that specifies which guitar strings
-#' to play for each specific note.
+#' @param notes,info noteworthy and note info strings. When \code{info = NULL},
+#' it is assumed that \code{notes} refers to a music object or string formatted
+#' as such.
+#' @param string space-delimited character string or vector (or integer vector
+#' if simple string numbers). This is an optional argument that specifies which
+#' instrument strings to play for each specific timestep. Otherwise \code{NULL}.
 #' @param bar logical, insert a bar check at the end of the phrase.
 #'
 #' @return a phrase.
-#' @name phrase
 #' @export
+#' @seealso \code{\link{valid-notes}}, \code{\link{valid-noteinfo}},
+#' \code{\link{music}}
 #'
 #' @examples
-#' phrase("c ec'g' ec'g'", "4 4 2") # no string numbers (not recommended)
+#' phrase("c ec'g' ec'g'", "4- 4 2") # no string arg (not recommended for tabs)
 #' phrase("c ec4g4 ec4g4", "4 4 2") # same as above
 #' phrase("c b, c", "4. 8( 8)", "5 5 5") # direction implies hammer on
 #' phrase("b2 c d", "4( 4)- 2", "5 5 5") # hammer and slide
 #'
 #' phrase("c ec'g' ec'g'", "1 1 1", "5 432 432")
-#' p("c ec'g' ec'g'", "1 1 1", "5 432 432") # same as above
-NULL
+#' p("c ec'g' ec'g'", 1, "5 4 4") # same as above
+#'
+#'
+#' n <- "a, b, c d e f g e f g a~ a"
+#' i <- "8- 8 8 8-. t8( t8)( t8) t16( t16)( t16) 8 1"
+#' m <- as_music(n, i)
+#'
+#' x <- p(n, i)
+#' x
+#' identical(x, p(m))
+#'
+#' x <- "a,4;5*5 b,4- c4 cgc'e'~4 cgc'e'1 e'4;2 c';3 g;4 c;5 ce'1;51"
+#' p(x)
+#' identical(p(x), p(as_music(x)))
+phrase <- function(notes, info = NULL, string = NULL, bar = FALSE){
+  if(is.null(info)){
+    if(!inherits(notes, "music")) notes <- as_music(notes)
+    if(is.null(string)) string <- music_strings(notes)
+    info <- .uncollapse(music_info(notes))
+    notes <- music_notes(notes)
+  } else {
+    notes <- as_noteworthy(notes)
+    n <- length(notes)
+    if(is.character(info)) info <- as_noteinfo(info)
+    info <- .uncollapse(info)
+    if(length(info) == 1) info <- rep(info, n)
+    if(length(string) == 1 && is.na(string)) string <- NULL
+    if(!is.null(string)){
+      string <- .uncollapse(string)
+      if(length(string) == 1) string <- rep(string, n)
+      if(length(string) != length(notes))
+        stop(
+          paste("`string` must have the same number of timesteps as `notes`,",
+                "or a single value to repeat, or be NULL."),
+          call. = FALSE
+        )
+      string <- .music_infer_strings(notes, .uncollapse(string))
+    }
+  }
+  notes <- .uncollapse(notes)
+  idx <- grep("\\d", notes)
+  if(length(idx)) notes <- .octave_to_tick(notes)
+  if(length(notes) != length(info))
+    stop(paste("`info` must have the same number of timesteps as `notes`",
+               "or a single value to repeat."), call. = FALSE)
+
+  dur <- as.character(info_duration(info))
+  trp <- gsub("t", "", gsub("^\\d+(\\.+|)$", "", dur))
+  rl <- rle(trp)
+
+  x <- purrr::map(seq_along(rl$values), ~{
+    idx2 <- sum(rl$lengths[1:.x])
+    idx1 <- idx2 - rl$lengths[.x] + 1
+    idx <- idx1:idx2
+    x <- notes[idx]
+    y <- info[idx]
+    z <- string[idx]
+    v <- as.integer(rl$values[.x])
+    p0 <- .phrase(x, y, z)
+    if(!is.na(v)){
+      p0 <- paste(p0, collapse = " ")
+      if(bar) p0 <- paste(p0, "|")
+      p0 <- gsub("\\| \\|", "\\|", p0)
+      p0 <- gsub(">t", ">", triplet(as_phrase(p0), v))
+    }
+    p0
+  })
+
+  idx <- which(rl$values == "")
+  if(length(idx)){
+    x[idx] <- purrr::map(x[idx], ~{
+      x <- paste(.x, collapse = " ")
+      if(bar) x <- paste(x, "|")
+      x <- gsub("\\| \\|", "\\|", x)
+      as_phrase(x)
+    })
+  }
+  do.call(c, x)
+}
 
 #' @export
 #' @rdname phrase
-phrase <- function(notes, info, string = NULL, bar = FALSE){
-  .check_noteworthy(notes)
-  if(length(notes) > 1) notes <- paste(notes, collapse = " ")
-  .check_phrase_input(info, "info")
-  if(length(string) == 1 && is.na(string)) string <- NULL
-  if(!is.null(string)) .check_phrase_input(string, "string")
-  notes <- (strsplit(notes, " ")[[1]] %>%
-              purrr::map_chr(.star_expand) %>%
-    paste0(collapse = " ") %>%
-      strsplit(" "))[[1]]
-  notes <- .octave_to_tick(notes)
-  info <- (strsplit(as.character(info), " ")[[1]] %>%
-             purrr::map_chr(.star_expand) %>%
-             paste0(collapse = " ") %>%
-             strsplit(" "))[[1]]
+p <- phrase
+
+.phrase <- function(notes, info, string){
   notes <- purrr::map_chr(notes, .tabsub)
   info <- purrr::map_chr(info, .tabsub)
   bend <- which(purrr::map_int(info, ~{
-    length(grep("\\^", strsplit(.x, ";")[[1]][1]))
+    length(grep("[^-]\\^", strsplit(.x, ";")[[1]][1]))
   }) == 1)
   dead <- which(purrr::map_int(info, ~{
     length(grep("xDEADNOTEx", strsplit(.x, ";")[[1]][1]))
@@ -119,8 +140,6 @@ phrase <- function(notes, info, string = NULL, bar = FALSE){
   info <- gsub(";", "", info)
   .bend <- "\\bendAfter #+6"
   s <- !is.null(string)
-  if(s && is.numeric(string))
-    string <- paste0(rep(string, length(notes)), collapse = " ")
   if(s) string <- .strsub(string)
   notes <- purrr::map_chr(
     seq_along(notes),
@@ -130,22 +149,11 @@ phrase <- function(notes, info, string = NULL, bar = FALSE){
         paste0("\\", .split_chord(string[.x], TRUE)), collapse = " "), ">"))
   notes <- gsub("<s>", "s", gsub("<r>", "r", notes))
   x <- paste0(notes, info)
-  if(length(bend)) x[bend] <- paste0(x[bend], .bend)
+  if(length(bend))
+    x[bend] <- gsub("\\^\\\\bend", "\\\\bend", paste0(x[bend], .bend))
   if(length(dead)) x[dead] <- paste("\\deadNote", x[dead])
-  x <- gsub("\\\\x", "", x)
-  x <- paste(x, collapse = " ")
-  if(bar) x <- paste(x, "|")
-  x <- gsub("\\| \\|", "\\|", x)
-  as_phrase(x)
+  gsub("\\\\x", "", x)
 }
-
-.check_phrase_input <- function(x, y){
-  if(length(x) > 1) stop(paste0("`", y, "` must be length one."), call. = FALSE)
-}
-
-#' @export
-#' @rdname phrase
-p <- phrase
 
 #' @export
 print.phrase <- function(x, ...){
@@ -160,11 +168,22 @@ print.phrase <- function(x, ...){
                  "\\6\\7")
   x <- gsub(pat, repl, x)
   x <- gsub(pat, repl, x)
-  x <- gsub(">(\\d)(\\.|\\(|\\))+( <)", paste0(">", info("\\1\\2"), " <"), x)
-  x <- gsub(">(\\d)(\\.+|)(\\\\[a-zA-Z]+|)", paste0(">", info("\\1\\2\\3")), x)
+  txt <- paste(c("\\\\deadNote|\\\\glissando",
+               paste0("\\\\", tabr::articulations$value)), collapse = "|")
+  x <- gsub(paste0("(", txt, ")"), info("\\1"), x)
+  x <- gsub("(-[->\\^_!\\.\\+])", info("\\1"), x)
+  x <- gsub(">(\\d+)([\\.\\(\\)]+)( <|\\^|)",
+            paste0(">", info("\\1\\2"), "\\3"), x)
+  x <- gsub(">(\\d+|)(\\.+|)(\\\\[a-zA-Z]+|)",
+            paste0(">", info("\\1\\2\\3")), x)
+  x <- gsub("(bendAfter #\\+6)", info("\\1"), x)
+  x <- gsub("(~)", info("\\1"), x)
   x <- gsub("(r|s)(\\d+)", paste0(notes("\\1"), info("\\2")), x)
-  cat(col1("<"),
-      col1$bold("Musical phrase"), col1(">"), "\n", col1(x), sep = "")
+  x <- gsub("(\\\\tuplet \\d/\\d \\d+ \\{|\\})", info("\\1"), x)
+  x <- gsub("(\\\\repeat )(unfold|percent|volta)( \\d+ \\{)",
+            info("\\1\\2\\3"), x)
+  cat(col1("<"), col1$bold("Musical phrase"), col1(">"), "\n", col1(x), "\n",
+      sep = "")
 }
 
 #' Phrase validation and coercion
@@ -195,7 +214,7 @@ print.phrase <- function(x, ...){
 #' challenging to deconstruct in a one to one manner.
 #' Information may be lost, garbled, or the function may fail.
 #' For example, this function is not advanced enough to unravel repeat notation
-#' or handle arbitrary text notations attached to notes.
+#' or tuplets.
 #'
 #'  \code{notable} returns \code{TRUE} or \code{FALSE} regarding whether a
 #'  phrase can be converted back to character string inputs,
@@ -206,6 +225,8 @@ print.phrase <- function(x, ...){
 #' @param phrase phrase object or character string (candidate phrase).
 #' @param collapse logical, collapse result into a single string ready for
 #' phrase construction.
+#' @param annotations logical, strip any text annotations from the note info
+#' converted from \code{phrase}.
 #'
 #' @return see details for each function's purpose and return value.
 #' @export
@@ -261,15 +282,18 @@ as_phrase <- function(phrase){
 #' @rdname phrase-checks
 phrasey <- function(phrase){
   if(!inherits(phrase, "phrase") & !inherits(phrase, "character")) return(FALSE)
-  i1 <- sum(attr(gregexpr("<", phrase)[[1]], "match.length"))
+  clr <- "\\\\override (Notehead|Stem)\\.color #\\(rgb-color [ 0-9\\.]+\\) "
+  x <- gsub(clr, "", phrase)
+  x <- gsub("->|\\^\".*\"", "", phrase)
+  i1 <- sum(attr(gregexpr("<", x)[[1]], "match.length"))
   if(i1 < 1){
-    if(gsub(" |(r|s)\\d+(\\.|)(\\.|)", "", phrase) == ""){
+    if(grepl("(r|s)\\d+(\\.|)(\\.|)", x)){
       return(TRUE)
     } else {
       return(FALSE)
     }
   }
-  i2 <- sum(attr(gregexpr(">", phrase)[[1]], "match.length"))
+  i2 <- sum(attr(gregexpr(">", x)[[1]], "match.length"))
   if(i1 != i2) return(FALSE)
   TRUE
 }
@@ -278,18 +302,42 @@ phrasey <- function(phrase){
 #' @rdname phrase-checks
 notify <- function(phrase){
   if(!phrasey(phrase)) stop("`phrase` is not phrasey.", call. = FALSE)
+  if(grepl("\\\\repeat", phrase))
+    stop("Cannot notify phrases containing repeat sections.", call. = FALSE)
+  if(grepl("\\\\tuplet", phrase))
+    stop("Cannot notify phrases containing tuplets.", call. = FALSE)
   x <- .tag_rests(phrase)
+  x <- gsub("\\\\deadNote ", "<\\\\deadNote ", x)
   x <- strsplit(x, " <")[[1]]
+  x <- gsub("\\\\bendAfter #\\+6", "^", x)
+  x <- gsub("\\\\(a-z)", "[\\1]", x)
   x <- gsub("\\\\glissando", "-", x)
   x <- gsub("is", "#", x)
   x <- gsub("(^|<)([a|e])s", "\\2_", x)
   x <- gsub(" ([a|e])s", " \\1_", x)
   x <- gsub("es", "_", x)
+
+  txt <- rep("", length(x))
+  idx <- grepl(".*\\^\".*\".*", x)
+  if(any(idx)){
+    txt[idx] <- gsub(" ", "_", gsub(".*\\^\"(.*)\".*", "\\1", x[idx]))
+    x[idx] <- gsub("(.*)(\\^\".*)", "\\1", x[idx])
+  }
+
+  idx2 <- grep("^(<|)\\\\deadNote$", x)
+  if(length(idx2)) x[idx2 + 1] <- paste0(x[idx2 + 1], "x")
+
   x <- gsub(" ", "", x)
   x <- gsub("^<", "", x)
-  x <- strsplit(x, ">")
+
+  if(any(idx)) x[idx] <- paste0(x[idx], ";^\"", txt[idx], "\"")
+
+  if(length(idx2)) x <- x[-idx2]
+
+  x <- strsplit(x, "(?<=[^-])>", perl = TRUE)
   notes <- sapply(x, "[[", 1)
   info <- sapply(x, "[[", 2)
+  info <- gsub("\\\\([a-z]+)", "[\\1]", info)
 
   pat <- "\\\\\\d+"
   y <- gregexpr(pat, notes)
@@ -306,7 +354,7 @@ notify <- function(phrase){
 
   string <- sapply(seq_along(y), f)
   notes <- gsub(pat, "", notes)
-  dplyr::tibble(notes = notes, info = info, string = string)
+  tibble::tibble(notes = notes, info = info, string = string)
 }
 
 .tag_rests <- function(x){
@@ -323,18 +371,19 @@ phrase_notes <- function(phrase, collapse = TRUE){
 
 #' @export
 #' @rdname phrase-checks
-phrase_info <- function(phrase, collapse = TRUE){
+phrase_info <- function(phrase, collapse = TRUE, annotations = TRUE){
   x <- notify(phrase)$info
+  if(!annotations) x <- .strip_annotations(x)
   if(collapse) x <- paste(x, collapse = " ")
-  x
+  .asni(x)
 }
 
 #' @export
 #' @rdname phrase-checks
-phrase_strings <- function(phrase, collapse = TRUE){
+phrase_strings <- function(phrase, collapse = FALSE){
   x <- notify(phrase)$string
   if(collapse){
-    x <- if(any(is.na(x))) as.character(NA) else paste(x, collapse = " ")
+    x <- if(all(is.na(x))) as.character(x) else paste(x, collapse = " ")
   }
   x
 }
@@ -345,4 +394,73 @@ notable <- function(phrase){
   if(!phrasey(phrase)) return(FALSE)
   tryCatch(notify(phrase), error = function(e) FALSE)
   TRUE
+}
+
+.strip_annotations <- function(x){
+  idx <- grepl(";\\^\".*\".*", x)
+  if(any(idx)) x[idx] <- gsub("(.*);\\^\".*\"$", "\\1", x[idx])
+  x
+}
+
+#' Simplify the LilyPond syntax of a phrase
+#'
+#' This function can be used to simplify the LilyPond syntax of a phrase. Not
+#' intended for direct use. See details.
+#'
+#' This function not intended to be used directly, but is available so that you
+#' can see how LilyPond syntax for phrases will be transformed by default in
+#' the process of creating a LilyPond file. This function is used by the
+#' \code{lilypond} function and associated \code{render_*} functions. When
+#' using \code{lilypond} directly, this can be controlled by the
+#' \code{simplify} argument.
+#'
+#' The result of this function is a character string containing simpler, more
+#' efficient LilyPond syntax. It can be coerced back to a phrase with
+#' \code{as_phrase}, but its print method colors will no longer display
+#' properly. More importantly, this simplification removes any possibility of
+#' transforming the phrase back to its original inputs. The more complex but
+#' nicely structured original representation does a better job at maintaining
+#' reasonable possibility of one to one transformation between a phrase object
+#' and the inputs that it was built from.
+#'
+#' @param phrase a phrase object.
+#'
+#' @return character
+#' @export
+#'
+#' @examples
+#' notes <- "a~ a b c' c'e'g'~ c'e'g'"
+#' info <- "8.. 8..-. 8- 8-^ 4.^ 4."
+#' (x <- p(notes, info))
+#' as_phrase(simplify_phrase(x))
+#'
+#' (x <- p(notes, info, 5))
+#' as_phrase(simplify_phrase(x))
+simplify_phrase <- function(phrase){
+  if(!inherits(phrase, "phrase")) stop("Not a phrase.", call. = FALSE)
+  .simplify_phrase(phrase)
+}
+
+.simplify_phrase <- function(x){
+  idx <- gregexpr(">(\\d+|\\d+\\.+)|(r|s)(\\d+|\\d+\\.+)", x)
+  y <- purrr::map2_chr(idx[[1]], attr(idx[[1]], "match.length"), ~{
+    substr(x, .x + 1, .x + .y - 1)
+  })
+  idx2 <- which(y[-1] == y[-length(y)])
+  if(length(idx2)){
+    i1 <- idx[[1]][idx2 + 1] + 1
+    i2 <- i1 + attr(idx[[1]], "match.length")[idx2 + 1] - 2
+    i <- unlist(mapply(`:`, i1, i2, SIMPLIFY = FALSE))
+    x <- strsplit(x, "", fixed = TRUE)[[1]]
+    x[i] <- ""
+    x <- paste(x, collapse = "")
+  }
+  x <- gsub("~(\\\\\\d+|) ", "\\1 ", x)
+  y <- "([a-g])(s|es|is|)([,]+|[']+|)(~|)"
+  x <- gsub(paste0("<", y,"(\\\\\\d|)>"), "\\1\\2\\3\\4\\5", x)
+  x <- gsub(paste0(y, "(\\\\\\d)(\\d+|\\d+\\.+)"), "\\1\\2\\3\\4\\6\\5", x)
+  x <- gsub("(~)(\\d+|\\d+\\.+)", "\\2\\1", x)
+  x <- gsub("~(\\\\\\d|)>(\\d+|\\d+\\.+|)", "\\1>\\2~", x)
+  x <- gsub("([a-gs,']+)~(\\\\\\d|) ", "\\1\\2~ ", x)
+  x
 }
