@@ -1,5 +1,5 @@
 Package: tabr
-Version: 0.4.0
+Version: 0.4.1
 Title: Music Notation Syntax, Manipulation, Analysis and Transcription
         in R
 Description: Provides a music notation syntax and a collection of music programming functions for generating, manipulating, organizing and analyzing musical information in R. 
@@ -29,10 +29,10 @@ Suggests: testthat, knitr, rmarkdown, covr, kableExtra, gridExtra,
         htmltools, fansi, tuneR, png
 Imports: magrittr, tibble, dplyr, purrr, tidyr, crayon, ggplot2
 VignetteBuilder: knitr
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
 NeedsCompilation: no
-Packaged: 2019-12-03 01:07:38 UTC; Matt
+Packaged: 2020-02-09 20:33:22 UTC; Matt
 Author: Matthew Leonawicz [aut, cre] (<https://orcid.org/0000-0001-9452-2771>)
 Maintainer: Matthew Leonawicz <matt_leonawicz@esource.com>
 Repository: CRAN
-Date/Publication: 2019-12-04 00:50:03 UTC
+Date/Publication: 2020-02-09 20:50:02 UTC

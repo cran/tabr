@@ -1,3 +1,17 @@
+# tabr 0.4.1
+
+* Fixed `pitch_freq` documentation error.
+* Fixed bug relating to multiple labels to `as_music`.
+* Fixed bug where lyrics were not parsed correctly when rests present for music object rendering functions.
+* Fixed bug where an explicitly added bar inside quotes failed due to a line break inside the string.
+* Added better support for a variety of line breaks.
+    * The `bar` argument to `phrase` (and associated functions) is now `NULL` by default, or character, rather than simply `TRUE` or `FALSE`. If a string is provided, it is interpreted as LilyPond bar notation. E.g., `bar = "|"` adds the LilyPond syntax `\bar "|"` to the end of a phrase. 
+    * If only a bar check is desired, `TRUE` is still accepted and will insert a bar check only rather than a literal bar. `FALSE` is treated as `NULL` for completeness.
+* Handle extra whitespace in `pc` and `pn`.
+* Fixed bug where final note in a scale was droppped by `scale_note`.
+* Unit test updates.
+* Documentation updates.
+
 # tabr 0.4.0
 
 * Breaking change: major refactor of `track` function. No more relative transposed keys. Now takes an explicit `key` argument that overrides the global `key` from sheet music render functions. Other arguments simplified and rearranged.
