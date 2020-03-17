@@ -1,3 +1,10 @@
+# tabr 0.4.2
+
+* Added `freq_ratio` generic for generating a data frame of frequency ratios from frequencies, noteworthy objects, or music objects.
+* Added utility functions for retrieving LilyPond version and installation directory and `tabr` LilyPond API details.
+* Fixed bug where multiple sharps in tuning broke tab staff string label LilyPond syntax.
+* Updated documentation.
+
 # tabr 0.4.1
 
 * Fixed `pitch_freq` documentation error.
@@ -8,7 +15,7 @@
     * The `bar` argument to `phrase` (and associated functions) is now `NULL` by default, or character, rather than simply `TRUE` or `FALSE`. If a string is provided, it is interpreted as LilyPond bar notation. E.g., `bar = "|"` adds the LilyPond syntax `\bar "|"` to the end of a phrase. 
     * If only a bar check is desired, `TRUE` is still accepted and will insert a bar check only rather than a literal bar. `FALSE` is treated as `NULL` for completeness.
 * Handle extra whitespace in `pc` and `pn`.
-* Fixed bug where final note in a scale was droppped by `scale_note`.
+* Fixed bug where final note in a scale was dropped by `scale_note`.
 * Unit test updates.
 * Documentation updates.
 

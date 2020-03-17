@@ -8,7 +8,7 @@
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
 
@@ -18,9 +18,9 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -30,14 +30,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -46,9 +48,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -115,9 +117,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -286,7 +285,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -315,16 +315,16 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li>key_is_minor</li>
 </ul>
 <p>There are also the functions, <code>key_n_flats</code> and <code>key_n_sharps</code>, that give the number of respective accidentals in a key signature.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">keys</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">keys</span>()</span></code></pre></div>
 <pre class="r-output"><code>#&gt;  [1] &quot;c&quot;   &quot;g&quot;   &quot;d&quot;   &quot;a&quot;   &quot;e&quot;   &quot;b&quot;   &quot;f#&quot;  &quot;c#&quot;  &quot;f&quot;   &quot;b_&quot;  &quot;e_&quot;  &quot;a_&quot; 
 #&gt; [13] &quot;d_&quot;  &quot;g_&quot;  &quot;c_&quot;  &quot;am&quot;  &quot;em&quot;  &quot;bm&quot;  &quot;f#m&quot; &quot;c#m&quot; &quot;g#m&quot; &quot;d#m&quot; &quot;a#m&quot; &quot;dm&quot; 
 #&gt; [25] &quot;gm&quot;  &quot;cm&quot;  &quot;fm&quot;  &quot;b_m&quot; &quot;e_m&quot; &quot;a_m&quot;
 </code></pre>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw">key_is_flat</span>(<span class="st">&quot;f&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">key_is_flat</span>(<span class="st">&quot;f&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] TRUE
 </code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">key_n_flats</span>(<span class="st">&quot;f&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">key_n_flats</span>(<span class="st">&quot;f&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] 1
 </code></pre>
 <p>The previous section gave an overview of noteworthy strings. While some of the functions that help enforce proper notation in R seemed like they did not offer much utility in terms of direct use, it was clear that they were integral to the robustness of other <code>tabr</code> functions. Now, looking at these key signature helpers, it may be tempting to dismiss their utility even more quickly because a trained musician does not need to invoke them at the command line to know what result they will return.</p>
@@ -343,19 +343,19 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li>scale_melodic_minor</li>
 <li>scale_jazz_minor</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">scale_hungarian_minor</span>(<span class="dt">key =</span> <span class="st">&quot;am&quot;</span>, <span class="dt">collapse =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">scale_hungarian_minor</span>(<span class="dt">key =</span> <span class="st">&quot;am&quot;</span>, <span class="dt">collapse =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; <span style="color: #555555;font-weight: bold;">&lt;Noteworthy string&gt;
 #&gt;   Format: </span><span>space-delimited time</span><span style="color: #555555;font-weight: bold;">
 #&gt;   Values: </span><span style="color: #00BBBB;font-weight: bold;">a</span><span style="color: #00BBBB;">,</span><span> </span><span style="color: #00BBBB;font-weight: bold;">b</span><span style="color: #00BBBB;">,</span><span> </span><span style="color: #00BBBB;font-weight: bold;">c</span><span> </span><span style="color: #00BBBB;font-weight: bold;">d#</span><span> </span><span style="color: #00BBBB;font-weight: bold;">e</span><span> </span><span style="color: #00BBBB;font-weight: bold;">f</span><span> </span><span style="color: #00BBBB;font-weight: bold;">g#</span><span>
 </span></code></pre>
 <p>You can specify whether the vector result should be returned as is, for convenient vectorized programming pipelines, or collapsed to a single string in keeping with the space-delimited time syntax format common throughout <code>tabr</code>. Many functions in <code>tabr</code> accept both formats as inputs and/or offer them as outputs.</p>
 <p>You can also specify if octave numbering should be included or stripped. Octave numbering is included by default because this maintains pitch order when the scale does not start on <code>C</code>. Every note in a noteworthy string has an implicit octave-3 position if not explicitly stated. Octave numbering attempts to be somewhat balanced around <code>C3</code>. If the result is not what is desired, it can be shifted by 12 semitones with <code>transpose</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">scale_major</span>(<span class="st">&quot;f&quot;</span>, <span class="ot">TRUE</span>, <span class="dt">ignore_octave =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">scale_major</span>(<span class="st">&quot;f&quot;</span>, <span class="ot">TRUE</span>, <span class="dt">ignore_octave =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; <span style="color: #555555;font-weight: bold;">&lt;Noteworthy string&gt;
 #&gt;   Format: </span><span>space-delimited time</span><span style="color: #555555;font-weight: bold;">
 #&gt;   Values: </span><span style="color: #00BBBB;font-weight: bold;">f</span><span> </span><span style="color: #00BBBB;font-weight: bold;">g</span><span> </span><span style="color: #00BBBB;font-weight: bold;">a</span><span> </span><span style="color: #00BBBB;font-weight: bold;">b_</span><span> </span><span style="color: #00BBBB;font-weight: bold;">c</span><span> </span><span style="color: #00BBBB;font-weight: bold;">d</span><span> </span><span style="color: #00BBBB;font-weight: bold;">e</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">scale_major</span>(<span class="st">&quot;f&quot;</span>, <span class="ot">TRUE</span>, <span class="dt">ignore_octave =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">scale_major</span>(<span class="st">&quot;f&quot;</span>, <span class="ot">TRUE</span>, <span class="dt">ignore_octave =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; <span style="color: #555555;font-weight: bold;">&lt;Noteworthy string&gt;
 #&gt;   Format: </span><span>space-delimited time</span><span style="color: #555555;font-weight: bold;">
 #&gt;   Values: </span><span style="color: #00BBBB;font-weight: bold;">f</span><span> </span><span style="color: #00BBBB;font-weight: bold;">g</span><span> </span><span style="color: #00BBBB;font-weight: bold;">a</span><span> </span><span style="color: #00BBBB;font-weight: bold;">b_</span><span> </span><span style="color: #00BBBB;font-weight: bold;">c</span><span style="color: #00BBBB;">&#39;</span><span> </span><span style="color: #00BBBB;font-weight: bold;">d</span><span style="color: #00BBBB;">&#39;</span><span> </span><span style="color: #00BBBB;font-weight: bold;">e</span><span style="color: #00BBBB;">&#39;</span><span>
@@ -374,11 +374,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li>mode_aeolian</li>
 <li>mode_locrian</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">modes</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">modes</span>()</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] &quot;ionian&quot;     &quot;dorian&quot;     &quot;phrygian&quot;   &quot;lydian&quot;     &quot;mixolydian&quot;
 #&gt; [6] &quot;aeolian&quot;    &quot;locrian&quot;
 </code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">mode_aeolian</span>(<span class="st">&quot;c&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">mode_aeolian</span>(<span class="st">&quot;c&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; <span style="color: #555555;font-weight: bold;">&lt;Noteworthy string&gt;
 #&gt;   Format: </span><span>vectorized time</span><span style="color: #555555;font-weight: bold;">
 #&gt;   Values: </span><span style="color: #00BBBB;font-weight: bold;">c</span><span> </span><span style="color: #00BBBB;font-weight: bold;">d</span><span> </span><span style="color: #00BBBB;font-weight: bold;">e_</span><span> </span><span style="color: #00BBBB;font-weight: bold;">f</span><span> </span><span style="color: #00BBBB;font-weight: bold;">g</span><span> </span><span style="color: #00BBBB;font-weight: bold;">a_</span><span> </span><span style="color: #00BBBB;font-weight: bold;">b_</span><span>
@@ -387,12 +387,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="diatonic-scale-chords" class="section level2">
 <h2>Diatonic scale chords</h2>
 <p>The <code>scale_chords</code> function provides a list of diatonic scale chords based on the root note and scale chosen. It returns triads by default and can also return seventh chords.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">scale_chords</span>(<span class="st">&quot;b_&quot;</span>, <span class="st">&quot;major&quot;</span>, <span class="st">&quot;seventh&quot;</span>, <span class="dt">collapse =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">scale_chords</span>(<span class="st">&quot;b_&quot;</span>, <span class="st">&quot;major&quot;</span>, <span class="st">&quot;seventh&quot;</span>, <span class="dt">collapse =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; <span style="color: #555555;font-weight: bold;">&lt;Noteworthy string&gt;
 #&gt;   Format: </span><span>space-delimited time</span><span style="color: #555555;font-weight: bold;">
 #&gt;   Values: </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">b_</span><span style="color: #00BBBB;">,</span><span style="color: #00BBBB;font-weight: bold;">dfa</span><span style="color: #BBBB00;">&gt;</span><span> </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">ce_gb_</span><span style="color: #BBBB00;">&gt;</span><span> </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">dfac</span><span style="color: #00BBBB;">&#39;</span><span style="color: #BBBB00;">&gt;</span><span> </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">e_gb_d</span><span style="color: #00BBBB;">&#39;</span><span style="color: #BBBB00;">&gt;</span><span> </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">fac</span><span style="color: #00BBBB;">&#39;</span><span style="color: #00BBBB;font-weight: bold;">e_</span><span style="color: #00BBBB;">&#39;</span><span style="color: #BBBB00;">&gt;</span><span> </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">gb_d</span><span style="color: #00BBBB;">&#39;</span><span style="color: #00BBBB;font-weight: bold;">f</span><span style="color: #00BBBB;">&#39;</span><span style="color: #BBBB00;">&gt;</span><span> </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">ac</span><span style="color: #00BBBB;">&#39;</span><span style="color: #00BBBB;font-weight: bold;">e_</span><span style="color: #00BBBB;">&#39;</span><span style="color: #00BBBB;font-weight: bold;">g</span><span style="color: #00BBBB;">&#39;</span><span style="color: #BBBB00;">&gt;</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">scale_chords</span>(<span class="st">&quot;f#&quot;</span>, <span class="st">&quot;minor&quot;</span>, <span class="st">&quot;triad&quot;</span>, <span class="dt">collapse =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">scale_chords</span>(<span class="st">&quot;f#&quot;</span>, <span class="st">&quot;minor&quot;</span>, <span class="st">&quot;triad&quot;</span>, <span class="dt">collapse =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; <span style="color: #555555;font-weight: bold;">&lt;Noteworthy string&gt;
 #&gt;   Format: </span><span>space-delimited time</span><span style="color: #555555;font-weight: bold;">
 #&gt;   Values: </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">f#ac#</span><span style="color: #00BBBB;">&#39;</span><span style="color: #BBBB00;">&gt;</span><span> </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">g#bd</span><span style="color: #00BBBB;">&#39;</span><span style="color: #BBBB00;">&gt;</span><span> </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">ac#</span><span style="color: #00BBBB;">&#39;</span><span style="color: #00BBBB;font-weight: bold;">e</span><span style="color: #00BBBB;">&#39;</span><span style="color: #BBBB00;">&gt;</span><span> </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">bd</span><span style="color: #00BBBB;">&#39;</span><span style="color: #00BBBB;font-weight: bold;">f#</span><span style="color: #00BBBB;">&#39;</span><span style="color: #BBBB00;">&gt;</span><span> </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">c#</span><span style="color: #00BBBB;">&#39;</span><span style="color: #00BBBB;font-weight: bold;">e</span><span style="color: #00BBBB;">&#39;</span><span style="color: #00BBBB;font-weight: bold;">g#</span><span style="color: #00BBBB;">&#39;</span><span style="color: #BBBB00;">&gt;</span><span> </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">d</span><span style="color: #00BBBB;">&#39;</span><span style="color: #00BBBB;font-weight: bold;">f#</span><span style="color: #00BBBB;">&#39;</span><span style="color: #00BBBB;font-weight: bold;">a</span><span style="color: #00BBBB;">&#39;</span><span style="color: #BBBB00;">&gt;</span><span> </span><span style="color: #BBBB00;">&lt;</span><span style="color: #00BBBB;font-weight: bold;">e</span><span style="color: #00BBBB;">&#39;</span><span style="color: #00BBBB;font-weight: bold;">g#</span><span style="color: #00BBBB;">&#39;</span><span style="color: #00BBBB;font-weight: bold;">b</span><span style="color: #00BBBB;">&#39;</span><span style="color: #BBBB00;">&gt;</span><span>
@@ -401,37 +401,37 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="scale-degrees" class="section level2">
 <h2>Scale degrees</h2>
 <p>The functions <code>scale_note</code> and <code>scale_degree</code> map between notes and degree in a given scale. For chords in a noteworthy string, only the root note is considered. For <code>scale_degree</code>, if a note is not diatonic to the scale, <code>NA</code> is returned. <code>NA</code> is also used when rests occur. Octaves are ignored. For <code>scale_note</code>, degrees outside the range of the scale are recycled. See below. To see if chords are fully diatonic, use <code>is_diatonic</code> or the more general <code>is_in_scale</code>. <code>chord_degree</code> will return a list comparable to <code>scale_degree</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">x &lt;-<span class="st"> &quot;c e gb&#39;d&#39;&quot;</span></a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="kw">scale_degree</span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>x &lt;-<span class="st"> &quot;c e gb&#39;d&#39;&quot;</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="kw">scale_degree</span>(x)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] 1 3 2
 </code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">scale_degree</span>(x, <span class="dt">key =</span> <span class="st">&quot;a&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">scale_degree</span>(x, <span class="dt">key =</span> <span class="st">&quot;a&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] NA  5  4
 </code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">scale_degree</span>(x, <span class="dt">key =</span> <span class="st">&quot;am&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">scale_degree</span>(x, <span class="dt">key =</span> <span class="st">&quot;am&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] 3 5 4
 </code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">scale_degree</span>(x, <span class="dt">scale =</span> <span class="st">&quot;chromatic&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">scale_degree</span>(x, <span class="dt">scale =</span> <span class="st">&quot;chromatic&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] 1 5 3
 </code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"></a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="kw">scale_note</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">7</span>, <span class="st">&quot;d&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="kw">scale_note</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">7</span>, <span class="st">&quot;d&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; <span style="color: #555555;font-weight: bold;">&lt;Noteworthy string&gt;
 #&gt;   Format: </span><span>vectorized time</span><span style="color: #555555;font-weight: bold;">
 #&gt;   Values: </span><span style="color: #00BBBB;font-weight: bold;">d</span><span> </span><span style="color: #00BBBB;font-weight: bold;">e</span><span> </span><span style="color: #00BBBB;font-weight: bold;">f#</span><span> </span><span style="color: #00BBBB;font-weight: bold;">g</span><span> </span><span style="color: #00BBBB;font-weight: bold;">a</span><span> </span><span style="color: #00BBBB;font-weight: bold;">b</span><span> </span><span style="color: #00BBBB;font-weight: bold;">c#</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">scale_note</span>(<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>), <span class="st">&quot;dm&quot;</span>, <span class="st">&quot;harmonic minor&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">scale_note</span>(<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>), <span class="st">&quot;dm&quot;</span>, <span class="st">&quot;harmonic minor&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; <span style="color: #555555;font-weight: bold;">&lt;Noteworthy string&gt;
 #&gt;   Format: </span><span>vectorized time</span><span style="color: #555555;font-weight: bold;">
 #&gt;   Values: </span><span style="color: #00BBBB;font-weight: bold;">d</span><span> </span><span style="color: #00BBBB;font-weight: bold;">e</span><span> </span><span style="color: #00BBBB;font-weight: bold;">f</span><span> </span><span style="color: #00BBBB;font-weight: bold;">g</span><span> </span><span style="color: #00BBBB;font-weight: bold;">a</span><span> </span><span style="color: #00BBBB;font-weight: bold;">b_</span><span> </span><span style="color: #00BBBB;font-weight: bold;">d_</span><span> </span><span style="color: #00BBBB;font-weight: bold;">d</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"></a>
-<a class="sourceLine" id="cb17-2" title="2"><span class="kw">note_in_scale</span>(<span class="st">&quot;a_ g#&quot;</span>, <span class="st">&quot;a_&quot;</span>, <span class="dt">strict_accidentals =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="kw">note_in_scale</span>(<span class="st">&quot;a_ g#&quot;</span>, <span class="st">&quot;a_&quot;</span>, <span class="dt">strict_accidentals =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] TRUE TRUE
 </code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"></a>
-<a class="sourceLine" id="cb18-2" title="2">x &lt;-<span class="st"> &quot;r d dfa df#a f#ac#&quot;</span></a>
-<a class="sourceLine" id="cb18-3" title="3"><span class="kw">chord_degree</span>(x, <span class="st">&quot;d&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a></span>
+<span id="cb18-2"><a href="#cb18-2"></a>x &lt;-<span class="st"> &quot;r d dfa df#a f#ac#&quot;</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="kw">chord_degree</span>(x, <span class="st">&quot;d&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [[1]]
 #&gt; [1] NA
 #&gt; 
@@ -447,10 +447,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 #&gt; [[5]]
 #&gt; [1] 3 5 7
 </code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">is_in_scale</span>(x, <span class="st">&quot;d&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">is_in_scale</span>(x, <span class="st">&quot;d&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1]    NA  TRUE FALSE  TRUE  TRUE
 </code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">is_diatonic</span>(x, <span class="st">&quot;d&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">is_diatonic</span>(x, <span class="st">&quot;d&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1]    NA  TRUE FALSE  TRUE  TRUE
 </code></pre>
 <p>Other functions in <code>tabr</code> also work with scales and some build upon functions introduced here.</p>
@@ -458,7 +458,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="musical-intervals" class="section level2">
 <h2>Musical intervals</h2>
 <p>Musical intervals can be referenced by a name or a numeric value defining the separation of two notes. <code>interval_semitones</code> returns a positive integer describing the number of semitones spanned by a common interval. It takes a name or abbreviation of a common interval as input. Essentially, any entry from any other column in the <code>mainIntervals</code> dataset can be used to obtain the interval in semitones. It’s a simple filter and match, but it is convenient to map between different representations of the same property in <code>tabr</code> without typing the extra bit of code to do so each time.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">mainIntervals</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>mainIntervals</span></code></pre></div>
 <pre class="r-output"><code>#&gt; <span style="color: #555555;"># A tibble: 26 x 5</span><span>
 #&gt;    semitones mmp            mmp_abb ad                                ad_abb
 #&gt;        </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                             </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> 
@@ -474,56 +474,56 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 #&gt; </span><span style="color: #555555;">10</span><span>         9 major sixth    M6      diminished seventh                d7    
 #&gt; </span><span style="color: #555555;"># ... with 16 more rows</span><span>
 </span></code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"></a>
-<a class="sourceLine" id="cb22-2" title="2"><span class="kw">interval_semitones</span>(<span class="kw">c</span>(<span class="st">&quot;m3&quot;</span>, <span class="st">&quot;M7&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="kw">interval_semitones</span>(<span class="kw">c</span>(<span class="st">&quot;m3&quot;</span>, <span class="st">&quot;M7&quot;</span>))</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1]  3 11
 </code></pre>
 <p>Likely more useful for programming, the function <code>pitch_interval</code> provides the number of semitones between two input notes. This function does not relate to specific scales, but is worth mentioning on the topic of interval helpers. It provides both magnitude and direction. The result is negative if the first note is of higher pitch than the second. It is vectorized and both inputs must have the same number of timesteps.</p>
 <p>Chords can be reduced to their root note (lowest pitch) for comparison or forced to yield an <code>NA</code> interval with respect to its two adjacent timesteps (e.g., <code>c</code> to <code>ceg</code> is <code>NA</code> and so is <code>ceg</code> to <code>c</code>). Rests <code>r</code> and silent rests <code>s</code> also yield an <code>NA</code> for the interval from a prior note.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">pitch_interval</span>(<span class="st">&quot;a2&quot;</span>, <span class="st">&quot;c&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">pitch_interval</span>(<span class="st">&quot;a2&quot;</span>, <span class="st">&quot;c&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] 3
 </code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="kw">pitch_interval</span>(<span class="st">&quot;c d e&quot;</span>, <span class="st">&quot;c c c&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">pitch_interval</span>(<span class="st">&quot;c d e&quot;</span>, <span class="st">&quot;c c c&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1]  0 -2 -4
 </code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">pitch_interval</span>(<span class="st">&quot;r c ceg c e g s&quot;</span>, <span class="st">&quot;a c d d f# a e&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">pitch_interval</span>(<span class="st">&quot;r c ceg c e g s&quot;</span>, <span class="st">&quot;a c d d f# a e&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] NA  0  2  2  2  2 NA
 </code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="kw">pitch_interval</span>(<span class="st">&quot;r c ceg c e g s&quot;</span>, <span class="st">&quot;a c d d f# a e&quot;</span>, <span class="dt">use_root =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">pitch_interval</span>(<span class="st">&quot;r c ceg c e g s&quot;</span>, <span class="st">&quot;a c d d f# a e&quot;</span>, <span class="dt">use_root =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] NA  0 NA  2  2  2 NA
 </code></pre>
 <p>Next is <code>scale_interval</code>. This function is similar to <code>pitch_interval</code> in that it takes two noteworthy strings, which together define an intervals element-wise. It is almost an inverse of <code>interval_semitones</code> except that you provide notes rather than the semitone distance of their intervals. The function returns a main interval name or abbreviation from <code>mainIntervals</code>, depending on <code>format</code>. The results are name-only. They are not signed. Use <code>pitch_interval</code> to obtain direction.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="kw">scale_interval</span>(<span class="st">&quot;c c c c&quot;</span>, <span class="st">&quot;c, e g b&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">scale_interval</span>(<span class="st">&quot;c c c c&quot;</span>, <span class="st">&quot;c, e g b&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] &quot;P8&quot; &quot;M3&quot; &quot;P5&quot; &quot;M7&quot;
 </code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="kw">scale_interval</span>(<span class="st">&quot;a2&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;mmp&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw">scale_interval</span>(<span class="st">&quot;a2&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;mmp&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] &quot;minor third&quot;
 </code></pre>
 <p>There are also lagged difference versions of these functions. You can adjust the lag with <code>n</code>. You can also retain (convenient for data frames) or trim the <code>n</code> leading <code>NA</code>s. This does not trim meaningful <code>NA</code>s like those resulting from rests.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="kw">pitch_diff</span>(<span class="st">&quot;c d e f g a b&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">pitch_diff</span>(<span class="st">&quot;c d e f g a b&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] NA  2  2  1  2  2  2
 </code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1"><span class="kw">pitch_diff</span>(<span class="st">&quot;c d e f g a b&quot;</span>, <span class="dt">trim =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw">pitch_diff</span>(<span class="st">&quot;c d e f g a b&quot;</span>, <span class="dt">trim =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] 2 2 1 2 2 2
 </code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">scale_diff</span>(<span class="st">&quot;c d e f g a b&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="kw">scale_diff</span>(<span class="st">&quot;c d e f g a b&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] NA   &quot;M2&quot; &quot;M2&quot; &quot;m2&quot; &quot;M2&quot; &quot;M2&quot; &quot;M2&quot;
 </code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1"><span class="kw">scale_diff</span>(<span class="st">&quot;c d e f g a b&quot;</span>, <span class="dt">n =</span> <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="kw">scale_diff</span>(<span class="st">&quot;c d e f g a b&quot;</span>, <span class="dt">n =</span> <span class="dv">2</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] NA   NA   &quot;M3&quot; &quot;m3&quot; &quot;m3&quot; &quot;M3&quot; &quot;M3&quot;
 </code></pre>
 <p>Lagged intervals respect rest timesteps. All timestep positions including rests are retained, but the lag-<code>n</code> difference computation ignores them.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1">x &lt;-<span class="st"> &quot;a, c r r r r g&quot;</span></a>
-<a class="sourceLine" id="cb33-2" title="2"><span class="kw">pitch_diff</span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>x &lt;-<span class="st"> &quot;a, c r r r r g&quot;</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a><span class="kw">pitch_diff</span>(x)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] NA  3 NA NA NA NA  7
 </code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1"><span class="kw">scale_diff</span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="kw">scale_diff</span>(x)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] NA   &quot;m3&quot; NA   NA   NA   NA   &quot;P5&quot;
 </code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1"><span class="kw">pitch_diff</span>(x, <span class="dt">n =</span> <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="kw">pitch_diff</span>(x, <span class="dt">n =</span> <span class="dv">2</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] NA NA NA NA NA NA 10
 </code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">scale_diff</span>(x, <span class="dt">n =</span> <span class="dv">2</span>, <span class="dt">trim =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="kw">scale_diff</span>(x, <span class="dt">n =</span> <span class="dv">2</span>, <span class="dt">trim =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre class="r-output"><code>#&gt; [1] NA   NA   NA   NA   &quot;m7&quot;
 </code></pre>
 </div>
