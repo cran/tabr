@@ -27,7 +27,15 @@ test_that("frequency conversions return as expected", {
 })
 
 test_that("frequency ratios compile correctly", {
-  x <- as_music("c4 e_ g c'e_'g'")
+  x <- c(0.5, 1, 1.5, 2)
+  y <- c(-1200, 0, 701.955, 1200)
+
+  expect_equal(ratio_to_cents(x), y)
+  expect_equal(ratio_to_cents(x),
+               ratio_to_cents(rep(220, 4), c(110, 220, 330, 440)))
+  expect_equal(x, cents_to_ratio(y))
+
+  x <- as_music("c4 e_g c'e_'g'")
   fr <- freq_ratio(x)
 
   x <- music_notes(x)
@@ -45,11 +53,11 @@ test_that("frequency ratios compile correctly", {
 
   y <- freq_ratio(x, ratios = "root")
   expect_identical(y$notes,
-                   as_noteworthy("c e_ g c'e_' c'g'", format = "vector"))
+                   as_noteworthy("c e_g c'e_' c'g'", format = "vector"))
   y <- freq_ratio(x, ratios = "range")
-  expect_identical(y$notes, as_noteworthy("c e_ g c'g'", format = "vector"))
+  expect_identical(y$notes, as_noteworthy("c e_g c'g'", format = "vector"))
 
-  x <- "c e_ g c'e_'g'"
+  x <- "c e_g c'e_'g'"
   fr3 <- freq_ratio(x)
   expect_identical(fr, fr3)
 })

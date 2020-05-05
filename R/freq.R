@@ -114,6 +114,32 @@ semitone_freq <- function(semitones, a4 = 440){
     stop("Semitones must range from 0 to 131.", call. = FALSE)
 }
 
+#' Convert between chord frequency ratios and cents
+#'
+#' Convert between frequency ratios and logarithmic cents
+#'
+#' @param x a vector of ratios if \code{y = NULL}, otherwise frequencies.
+#' Cents for \code{cents_to_ratio}.
+#' @param y if not \code{NULL}, frequencies and the ratios are given by
+#' \code{y / x}.
+#'
+#' @return numeric
+#' @export
+#'
+#' @examples
+#' ratio_to_cents(c(0.5, 1, 1.5, 2))
+#' cents_to_ratio(c(-1200, 0, 701.955, 1200))
+ratio_to_cents <- function(x, y = NULL){
+  if(!is.null(y)) x <- y / x
+  1200 * log(x, 2)
+}
+
+#' @export
+#' @rdname ratio_to_cents
+cents_to_ratio <- function(x){
+  2 ^ (x / 1200)
+}
+
 #' Frequency ratios
 #'
 #' Obtain frequency ratios data frame.
@@ -195,7 +221,7 @@ freq_ratio.numeric <- function(x, ...){
 #' @export
 freq_ratio.default <- function(x, ...){
   r <- .freq_ratio_args(...)$r
-  freq_ratio.noteworthy(as_noteworthy(x), r)
+  freq_ratio.noteworthy(as_noteworthy(x), ratios = r)
 }
 
 .freq_ratio <- function(x, r, o, a){
@@ -212,6 +238,7 @@ freq_ratio.default <- function(x, ...){
   }
   x <- utils::combn(x, 2)
   if(r == "root") x <- x[, x[1, ] == x[1, 1]]
+  if(!is.matrix(x)) x <- matrix(x, ncol = 1)
   ratio <- x[2, ] / x[1, ]
   f <- function(x, y, o, a){
     gsub("NA", "", paste0(freq_pitch(x, o, a), freq_pitch(y, o, a)))

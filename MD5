@@ -1,14 +1,14 @@
-fb5c247e8880c459807a29647cd87075 *DESCRIPTION
+25f7a3cef0ddd186fc759cc02a72a0c3 *DESCRIPTION
 4e5cb40b14f9f1ff7e0bc56881b9f5bf *LICENSE
-b89a83f9b0cf7760a27e6fb369d5c73a *NAMESPACE
-11bb6f9e531f2d060cf0d3c776a014b2 *NEWS.md
+f314522c52e48fbe036efcbf7f0e1cea *NAMESPACE
+beaeb3d07d1709202a7c44cfbea15516 *NEWS.md
 ef408a428df0eb42e5f31cea59b956a8 *R/chord_mapping.R
 3e974b4e346c3d01b6cf582926608d64 *R/chords.R
-e72631614cc4b1066e1adccde032b0e8 *R/class_methods.R
+18fe99838bf2e94f17b003cfb31a459f *R/class_methods.R
 62e7c48c517d4fa77fb846e8f2ce0ea5 *R/convert.R
 2b6811ef324c9beba1ac3b36691e88ef *R/data.R
 0c7880ffb4186a9a2e457deb40edd9e4 *R/df.R
-8bfa1ac17ee19729e1c3893e7d98b586 *R/freq.R
+31d74e5fd54dfd066ab56c507b1193ff *R/freq.R
 9bbdc1df5280178ed750e6ffc9f661a4 *R/intervals.R
 3c23ccef356685d3b286e098a9e17ce2 *R/keys.R
 2a14429f210643e7046f0ca866dfec52 *R/lilypond.R
@@ -37,7 +37,7 @@ d2f9b06cfbf9db87b28981ac1c387a9e *R/time.R
 173e1ebb02850bb7834f3c4a1bcddfb2 *R/utils.R
 e0215f5d96aa707b5a01680e56fc4be0 *R/zzz.R
 aa656051f8ef4fd0f0fe347f71908a03 *README.md
-94416dfd88776912a24893c22134e898 *build/vignette.rds
+7791e245225af5a0802b8204fe753638 *build/vignette.rds
 58f2e65bb7a56cfbf93e6bfda12dd332 *data/articulations.rda
 5c082593e3ed0c5fb585e16897f941e5 *data/guitarChords.rda
 0a16e1a4b12443cef21873aa0919ffd2 *data/mainIntervals.rda
@@ -46,7 +46,7 @@ e938847e49e38a2c885c19b9178bd305 *data/tabrSyntax.rda
 2ea62c6503e9c0a5758044700c5859aa *inst/WORDLIST
 8015b185e0e4da66b15b04127469046b *inst/doc/tabr-prog-chords.R
 8b5922056de0e0f9f20dc84bc09046b9 *inst/doc/tabr-prog-chords.Rmd
-f47d6c58a60011e953c68234d4c7b4dc *inst/doc/tabr-prog-chords.html
+bd27cedac7d5cd90f2fce4de9e235221 *inst/doc/tabr-prog-chords.html
 a3ccf053dad53d5f7c9f31370449f53a *inst/doc/tabr-prog-music.R
 680ee05f8ea0580bc17d8edda88d3b30 *inst/doc/tabr-prog-music.Rmd
 d62837be62168f77e1a8dcf51c679ac6 *inst/doc/tabr-prog-music.html
@@ -115,6 +115,7 @@ ecb5adbf615645fb6a794b0614a3959e *man/pitch_freq.Rd
 f1b5ba9ba1ab550388fa33026bc4428a *man/pitch_seq.Rd
 f44b5e2089ed42a8656a30a9526203ba *man/plot_fretboard.Rd
 40e4695524c7401f3c99a32473fdc9d8 *man/plot_music.Rd
+dc755ba675de918b5e76372009ac7f24 *man/ratio_to_cents.Rd
 0cc57e62d56d88d84d6d18de6c6481bc *man/read_midi.Rd
 71f17ec7ef019cd44851038bf789a9c8 *man/render_chordchart.Rd
 216878b4cb34439ac2969d192c5ce282 *man/render_music.Rd
@@ -152,7 +153,7 @@ f1c2d0e977867e640c8af87c7a8e1755 *tests/testthat.R
 8a5ca8fd7ee26850aa6b0320bc69dcc5 *tests/testthat/test-chords.R
 cd04d8c7bb660e54b6b3fa94a9414bb5 *tests/testthat/test-convert.R
 46f19d1cf9e4f9d9926d75eed77b4e4f *tests/testthat/test-df.R
-a032c3d78d18eab7f5a30ed77638ffa2 *tests/testthat/test-freq.R
+70f1c959f34086ee4bb36befd748313a *tests/testthat/test-freq.R
 d2c5d1218cd724c7af107e403745e9ac *tests/testthat/test-helpers.R
 34f0cceb8f95cb264de2357702b772e8 *tests/testthat/test-intervals.R
 22d0b04929444114c36de06b8ca7e1c8 *tests/testthat/test-keys.R
