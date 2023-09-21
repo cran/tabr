@@ -28,7 +28,7 @@ x
 summary(x)
 
 ## ----noteworthy3--------------------------------------------------------------
-x <- "a2 r b2*2 ce_g cd#g HELLO_WORLD"
+x <- "a, r b,*2 ce_g cd#g HELLO_WORLD"
 is_note(x)
 is_chord(x)
 

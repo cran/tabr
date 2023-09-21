@@ -87,6 +87,12 @@ octave_is_equal(x, y)
 octave_is_identical(x, y)
 octave_is_identical(x, y, single_octave = TRUE)
 
+x <- "a,, b_, a,,b,c a,,b' g,,a,,b,,"
+y <- "a_, g#, d,,e,,f,g a,,b,b' d,,e,,"
+octave_is_equal(x, y)
+octave_is_identical(x, y)
+octave_is_identical(x, y, single_octave = TRUE)
+
 ## ----notes10------------------------------------------------------------------
 x <- "a b ceg"
 note_slice(x, 2:3)
@@ -115,17 +121,17 @@ note_arpeggiate("c e_ g_ a", 3)
 note_arpeggiate("c e_ g_ a", 3, -3)
 
 ## ----tp1----------------------------------------------------------------------
-notes1 <- "c3 b2 c3 d3 e3 e3 d3 c3 b2 c3 c3 c4"
-notes2 <- "c4 b c4 d4 e4 e4 d4 c4 b c4 c4 c5"
+notes1 <- "c b, c d e e d c b, c c c'"
+notes2 <- "c' b c' d' e' e' d' c' b c' c' c''"
 transpose(notes1, 12, octaves = "integer") == as_noteworthy(notes2)
 
 ## ----tp2----------------------------------------------------------------------
-transpose("a_3 b_4 c5", 0)
-tp("a_3 b_4 c5", -1)
-tp("a_3 b_4 c5", 1)
-tp("a#3 b4 c#5", 11)
-tp("a#3 b4 c#5", -12)
-tp("a#3 b4 c#5", 13)
+transpose("a_ b_' c'", 0)
+tp("a_ b_' c'", -1)
+tp("a_ b_' c'", 1)
+tp("a# b' c#'", 11)
+tp("a# b' c#'", -12)
+tp("a# b' c#'", 13)
 
 ## ----tp3----------------------------------------------------------------------
 tp("a3 b4 c5", 2, key = "f")

@@ -4,7 +4,7 @@
 #'
 #' Version information and installation directory are returned if the
 #' installation can be found. The LilyPond API references the currently loaded
-#' version of \code{tabr}.
+#' version of `tabr`.
 #'
 #' @return a message or system standard output.
 #' @export
@@ -29,13 +29,28 @@ lilypond_version <- function(){
 #' @rdname lilypond_root
 #' @export
 tabr_lilypond_api <- function(){
-  x <- "GNU LilyPond 2.23.0"
-  msg <- paste0(
-    "The tabr ", getNamespaceVersion("tabr"),
-    " LilyPond API was built and tested against ", x,
-    " for Windows and Linux.\nLilypond is not officially supported for OSX."
-  )
-  message(msg)
+  message(.tabr_lilypond_api())
 }
 
-.lp_not_found <- "Cannot find lilypond installation."
+.tabr_lilypond_api <- function(){
+  os <- Sys.info()[["sysname"]]
+  if(grepl("Darwin", os, ignore.case = TRUE)) os <- "MacOS"
+  x <- switch(
+    os,
+    Windows = .tabr_api_lp_versions$Windows,
+    Linux = .tabr_api_lp_versions$Linux,
+    MacOS = .tabr_api_lp_versions$MacOS
+  )
+  x <- paste("LilyPond", x)
+
+  paste0(
+    "The tabr ", getNamespaceVersion("tabr"),
+    " LilyPond API was built and tested against ", x, " on ", os, "."
+  )
+}
+
+.tabr_api_lp_versions <- list(
+  Windows = "2.23.6",
+  Linux   = "2.22.1-2",
+  MacOS   = "2.24.2"
+)
