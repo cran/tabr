@@ -1,7 +1,7 @@
 Package: tabr
 Title: Music Notation Syntax, Manipulation, Analysis and Transcription
         in R
-Version: 0.5.1
+Version: 0.5.2
 Authors@R: person("Matthew", "Leonawicz", email = "rpkgs@pm.me", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9452-2771"))
 Description: Provides a music notation syntax and a collection of music
     programming functions for generating, manipulating, organizing, and analyzing
@@ -25,9 +25,10 @@ Description: Provides a music notation syntax and a collection of music
     structure the MIDI data to integrate as best as possible with the data
     structures and functionality found throughout the package.
 License: MIT + file LICENSE
-URL: https://github.com/leonawicz/tabr
+URL: https://github.com/leonawicz/tabr,
+        https://leonawicz.github.io/tabr/
 BugReports: https://github.com/leonawicz/tabr/issues
-Depends: R (>= 2.10)
+Depends: R (>= 4.1)
 Imports: crayon, dplyr, ggplot2, purrr, tibble, tidyr
 Suggests: fansi, gridExtra, htmltools, kableExtra, knitr, png,
         rmarkdown, testthat, tuneR
@@ -39,8 +40,8 @@ RoxygenNote: 7.3.2
 SystemRequirements: LilyPond v2.22.1-2+ (needed for rendering sheet
         music or writing MIDI files)
 NeedsCompilation: no
-Packaged: 2024-09-11 21:56:51 UTC; Matt
+Packaged: 2025-04-28 19:34:37 UTC; Matt
 Author: Matthew Leonawicz [aut, cre] (<https://orcid.org/0000-0001-9452-2771>)
 Maintainer: Matthew Leonawicz <rpkgs@pm.me>
 Repository: CRAN
-Date/Publication: 2024-09-11 22:50:10 UTC
+Date/Publication: 2025-04-28 19:50:03 UTC
