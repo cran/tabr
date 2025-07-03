@@ -1,7 +1,7 @@
-061a8242bdf94bf267cf7de0775d3f2a *DESCRIPTION
+61796b8a6d4656fae2d5b3ed254edaad *DESCRIPTION
 4e5cb40b14f9f1ff7e0bc56881b9f5bf *LICENSE
 c8021766d3406d6f6ea51f6ac550f815 *NAMESPACE
-6d1f65e6f682ec9aaf322603ab398ed5 *NEWS.md
+51c94b4faaa1e5bbc5a0f22109917c57 *NEWS.md
 1a3de5a2bb523ae072b32b0ce7a85f86 *R/chord_mapping.R
 8955290d17a3191eeab8ff74def9da92 *R/chords.R
 c097135a29f435fc3a042dc3524e2e03 *R/class_methods.R
@@ -11,10 +11,10 @@ a8fcffe9533d121c6ad82e7075b7c8c7 *R/df.R
 9056fafea839d8c6932741320d2953d3 *R/freq.R
 394b9dc77fa5d7a4f79e9dc4f71bbca3 *R/intervals.R
 7d5d011a77cbacf195920c811ca4103d *R/keys.R
-d1272de514c6d2847eb41a531729fcad *R/lilypond.R
-7bc156695f2560738959ef8b339e4f27 *R/lp_render.R
+ed9bffa82d04988b5ea297c1271fdc77 *R/lilypond.R
+d6c4f6baa29ee24fb3091ffc3447920f *R/lp_render.R
 0d5454e9060c48ee40ab95890bc23745 *R/lyrics.R
-c289d491ee67c0e3dbc8de7bd7ea94ed *R/midi.R
+7f30302f60625a2ab618d59349b8cfad *R/midi.R
 3050bf3685b92051c9ec4340f7c58eca *R/modes.R
 d1908cf304dc497aada004bcee6f5b94 *R/music.R
 bf7b98b84ca8e52a8d5e62985259e25d *R/noteinfo.R
@@ -36,7 +36,7 @@ b3e1ffa270ebdedcaa95bf261c301fdb *R/tracks.R
 aa88ede42fe79f27ef03cc1bd6674eff *R/transpose.R
 dd1a04a63fbc9d626ca23bb21b87e762 *R/utils.R
 4a960210400fd99b206ac3f3321208f5 *R/zzz.R
-89f22542b37adaa026b2bd493fa97e3b *README.md
+e401382d36355c62f2f8d0971e395ed7 *README.md
 80e5141ef9065dd1b7a4240032f466d4 *build/vignette.rds
 58f2e65bb7a56cfbf93e6bfda12dd332 *data/articulations.rda
 5c082593e3ed0c5fb585e16897f941e5 *data/guitarChords.rda
@@ -89,7 +89,7 @@ c7cd53c70e3b4bd860f7978e39f8d02c *man/hp.Rd
 54bbabbd92c68cd8543e5452a07da8b8 *man/intervals.Rd
 8d41344f1de7ad69feec51b29b3f79f2 *man/is_diatonic.Rd
 8e51fc8a0ff8837753746859c3feeb61 *man/keys.Rd
-541d5bebdec8cd2181101619ec0278d5 *man/lilypond.Rd
+02b7a9c169c1b26da0fce110d7fee4ea *man/lilypond.Rd
 935a217ad68fdae5c6db4a51f4ba46f7 *man/lilypond_root.Rd
 2cbc78f41ade343483a6f52d20bb58bd *man/lp_chord_id.Rd
 78fb21cdd92291b29ef682947bb201f0 *man/lyrics.Rd
@@ -117,8 +117,8 @@ a18431d097f5875a696913c4f1733da3 *man/phrase.Rd
 24966edd80abeaa8a06046bb740c9a26 *man/plot_fretboard.Rd
 1214d630971a062ea9da9cc2c5808b88 *man/plot_music.Rd
 8c793b0d4a061e8bd40a22bbd3425e22 *man/ratio_to_cents.Rd
-00169e2c7d255bd1ff978c98e7c84839 *man/read_midi.Rd
-6f6ca77f04bc404bf6b73747f7ddf041 *man/render_chordchart.Rd
+c182a38adfdeea105b9acaf66e9a2fee *man/read_midi.Rd
+c5dccbe9a9ada1609eaeb10a46a9f146 *man/render_chordchart.Rd
 95adfe7a24ac828ded96096de4e8b216 *man/render_music.Rd
 cff1a1093401d4611ae2286ab784f665 *man/repeats.Rd
 ab2875e90e0be70949031968d8e68953 *man/rest.Rd
@@ -130,7 +130,7 @@ f04562a63cf521083a7a96e4dcb449ab *man/scale_chords.Rd
 448f394aa1dc5231ec4916e21a1b105a *man/simplify_phrase.Rd
 fa0052b1f820db249de46fb5e235d506 *man/single-bracket.Rd
 d592ec5da82f9b0ca579e58c3040b4e7 *man/string_unfold.Rd
-919133f1882e09d9ed5e42c1a2818f8c *man/tab.Rd
+c11a74cca891c9f699d3c2a43def98b9 *man/tab.Rd
 0e0159b62c3819d82d95fefa09c9f26b *man/tabr-c.Rd
 c4af12fd392d4ce836f132058dc07111 *man/tabr-details.Rd
 1146c824acd8d6a74a21adab059c72a0 *man/tabr-head.Rd
@@ -166,7 +166,7 @@ b5f73ed941f5842ff29981892131e102 *tests/testthat/test-modes.R
 e2255330977a69e489cc7478066d2521 *tests/testthat/test-noteinfo.R
 fbe10fdf37709862622d53f218c7f704 *tests/testthat/test-notes.R
 f816164dcdafbe94c87bb8510a515dda *tests/testthat/test-opts.R
-d9b3506259c7bf3664d1190ada946232 *tests/testthat/test-outputs.R
+8b55908db2884b958882e46ed854b53c *tests/testthat/test-outputs.R
 684c89515f2cd5641bddca1e94185d05 *tests/testthat/test-phrase.R
 480c4bf097fd4a4620b6725f50b7183a *tests/testthat/test-pitch.R
 ba389d80e4b42a5375b2a88ee1e9bf4b *tests/testthat/test-plot.R

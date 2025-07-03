@@ -1,7 +1,7 @@
 Package: tabr
 Title: Music Notation Syntax, Manipulation, Analysis and Transcription
         in R
-Version: 0.5.2
+Version: 0.5.3
 Authors@R: person("Matthew", "Leonawicz", email = "rpkgs@pm.me", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9452-2771"))
 Description: Provides a music notation syntax and a collection of music
     programming functions for generating, manipulating, organizing, and analyzing
@@ -40,8 +40,9 @@ RoxygenNote: 7.3.2
 SystemRequirements: LilyPond v2.22.1-2+ (needed for rendering sheet
         music or writing MIDI files)
 NeedsCompilation: no
-Packaged: 2025-04-28 19:34:37 UTC; Matt
-Author: Matthew Leonawicz [aut, cre] (<https://orcid.org/0000-0001-9452-2771>)
+Packaged: 2025-07-03 19:02:19 UTC; Matt
+Author: Matthew Leonawicz [aut, cre] (ORCID:
+    <https://orcid.org/0000-0001-9452-2771>)
 Maintainer: Matthew Leonawicz <rpkgs@pm.me>
 Repository: CRAN
-Date/Publication: 2025-04-28 19:50:03 UTC
+Date/Publication: 2025-07-03 22:40:06 UTC
